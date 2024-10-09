@@ -1,3 +1,11 @@
+--[[
+༺☆༻____________☾✧ ✩ ✧☽____________༺☆༻༺☆༻____________☾✧ ✩ ✧☽____________༺☆༻
+
+    ✨Syu Aim Assist Framework✨
+    Release 1.1.0
+•───────•°•❀•°•───────•୧‿̩͙ ˖︵ꕀ ⠀𓏶 ̣̣̥⠀ ꕀ︵˖ ̩͙‿୨•───────•°•❀•°•───────•]]
+
+
 --! Debugger
 
 local DEBUG = false
@@ -43,8 +51,8 @@ local InterfaceManager = {}
 
 function InterfaceManager:ImportSettings()
     pcall(function()
-        if not DEBUG and getfenv().isfile and getfenv().readfile and getfenv().isfile("UISettings.ttwizz") and getfenv().readfile("UISettings.ttwizz") then
-            for Key, Value in next, HttpService:JSONDecode(getfenv().readfile("UISettings.ttwizz")) do
+        if not DEBUG and getfenv().isfile and getfenv().readfile and getfenv().isfile("UISettings.Syu0yczs") and getfenv().readfile("UISettings.Syu0yczs") then
+            for Key, Value in next, HttpService:JSONDecode(getfenv().readfile("UISettings.Syu0yczs")) do
                 UISettings[Key] = Value
             end
         end
@@ -54,7 +62,7 @@ end
 function InterfaceManager:ExportSettings()
     pcall(function()
         if not DEBUG and getfenv().isfile and getfenv().readfile and getfenv().writefile then
-            getfenv().writefile("UISettings.ttwizz", HttpService:JSONEncode(UISettings))
+            getfenv().writefile("UISettings.Syu0yczs", HttpService:JSONEncode(UISettings))
         end
     end)
 end
@@ -83,8 +91,8 @@ end
 local ImportedConfiguration = {}
 
 pcall(function()
-    if not DEBUG and getfenv().isfile and getfenv().readfile and getfenv().isfile(string.format("%s.ttwizz", game.GameId)) and getfenv().readfile(string.format("%s.ttwizz", game.GameId)) and UISettings.AutoImport then
-        ImportedConfiguration = HttpService:JSONDecode(getfenv().readfile(string.format("%s.ttwizz", game.GameId)))
+    if not DEBUG and getfenv().isfile and getfenv().readfile and getfenv().isfile(string.format("%s.Syu0yczs", game.GameId)) and getfenv().readfile(string.format("%s.Syu0yczs", game.GameId)) and UISettings.AutoImport then
+        ImportedConfiguration = HttpService:JSONDecode(getfenv().readfile(string.format("%s.Syu0yczs", game.GameId)))
         for Key, Value in next, ImportedConfiguration do
             if Key == "FoVColour" or Key == "NameESPOutlineColour" or Key == "ESPColour" then
                 ImportedConfiguration[Key] = ColorsHandler:UnpackColour(Value)
@@ -1234,8 +1242,8 @@ do
             Description = "Loads the Game Configuration File",
             Callback = function()
                 xpcall(function()
-                    if getfenv().isfile(string.format("%s.ttwizz", game.GameId)) and getfenv().readfile(string.format("%s.ttwizz", game.GameId)) then
-                        local ImportedConfiguration = HttpService:JSONDecode(getfenv().readfile(string.format("%s.ttwizz", game.GameId)))
+                    if getfenv().isfile(string.format("%s.Syu0yczs", game.GameId)) and getfenv().readfile(string.format("%s.Syu0yczs", game.GameId)) then
+                        local ImportedConfiguration = HttpService:JSONDecode(getfenv().readfile(string.format("%s.Syu0yczs", game.GameId)))
                         for Key, Value in next, ImportedConfiguration do
                             if Key == "AimKey" or Key == "TriggerKey" or Key == "FoVKey" or Key == "ESPKey" then
                                 Fluent.Options[Key]:SetValue(Value)
@@ -1278,7 +1286,7 @@ do
                         end
                         Window:Dialog({
                             Title = "Configuration Manager",
-                            Content = string.format("Configuration File %s.ttwizz has been successfully loaded!", game.GameId),
+                            Content = string.format("Configuration File %s.Syu0yczs has been successfully loaded!", game.GameId),
                             Buttons = {
                                 {
                                     Title = "Confirm"
@@ -1288,7 +1296,7 @@ do
                     else
                         Window:Dialog({
                             Title = "Configuration Manager",
-                            Content = string.format("Configuration File %s.ttwizz could not be found!", game.GameId),
+                            Content = string.format("Configuration File %s.Syu0yczs could not be found!", game.GameId),
                             Buttons = {
                                 {
                                     Title = "Confirm"
@@ -1299,7 +1307,7 @@ do
                 end, function()
                     Window:Dialog({
                         Title = "Configuration Manager",
-                        Content = string.format("An Error occurred when loading the Configuration File %s.ttwizz", game.GameId),
+                        Content = string.format("An Error occurred when loading the Configuration File %s.Syu0yczs", game.GameId),
                         Buttons = {
                             {
                                 Title = "Confirm"
@@ -1326,10 +1334,10 @@ do
                         end
                     end
                     ExportedConfiguration = HttpService:JSONEncode(ExportedConfiguration)
-                    getfenv().writefile(string.format("%s.ttwizz", game.GameId), ExportedConfiguration)
+                    getfenv().writefile(string.format("%s.Syu0yczs", game.GameId), ExportedConfiguration)
                     Window:Dialog({
                         Title = "Configuration Manager",
-                        Content = string.format("Configuration File %s.ttwizz has been successfully overwritten!", game.GameId),
+                        Content = string.format("Configuration File %s.Syu0yczs has been successfully overwritten!", game.GameId),
                         Buttons = {
                             {
                                 Title = "Confirm"
@@ -1339,7 +1347,7 @@ do
                 end, function()
                     Window:Dialog({
                         Title = "Configuration Manager",
-                        Content = string.format("An Error occurred when overwriting the Configuration File %s.ttwizz", game.GameId),
+                        Content = string.format("An Error occurred when overwriting the Configuration File %s.Syu0yczs", game.GameId),
                         Buttons = {
                             {
                                 Title = "Confirm"
@@ -1354,11 +1362,11 @@ do
             Title = "Delete Configuration File",
             Description = "Removes the Game Configuration File",
             Callback = function()
-                if getfenv().isfile(string.format("%s.ttwizz", game.GameId)) then
-                    getfenv().delfile(string.format("%s.ttwizz", game.GameId))
+                if getfenv().isfile(string.format("%s.Syu0yczs", game.GameId)) then
+                    getfenv().delfile(string.format("%s.Syu0yczs", game.GameId))
                     Window:Dialog({
                         Title = "Configuration Manager",
-                        Content = string.format("Configuration File %s.ttwizz has been successfully removed!", game.GameId),
+                        Content = string.format("Configuration File %s.Syu0yczs has been successfully removed!", game.GameId),
                         Buttons = {
                             {
                                 Title = "Confirm"
@@ -1368,7 +1376,7 @@ do
                 else
                     Window:Dialog({
                         Title = "Configuration Manager",
-                        Content = string.format("Configuration File %s.ttwizz could not be found!", game.GameId),
+                        Content = string.format("Configuration File %s.Syu0yczs could not be found!", game.GameId),
                         Buttons = {
                             {
                                 Title = "Confirm"
@@ -1382,7 +1390,7 @@ do
         ShowWarning = true
     end
 
-    local DiscordWikiSection = Tabs.Settings:AddSection("Discord & Wiki")
+    local DiscordWikiSection = Tabs.Settings:AddSection("Discord")
 
     if getfenv().setclipboard then
         DiscordWikiSection:AddButton({
@@ -1610,7 +1618,7 @@ local function IsReady(Target)
             return false
         elseif Configuration.TransparencyCheck and Head and Head:IsA("BasePart") and Head.Transparency >= Configuration.IgnoredTransparency then
             return false
-        elseif Configuration.WhitelistedGroupCheck and _Player:IsInGroup(Configuration.WhitelistedGroup) or Configuration.BlacklistedGroupCheck and not _Player:IsInGroup(Configuration.BlacklistedGroup) or Configuration.PremiumCheck and _Player:IsInGroup(tonumber(Fluent.Address, 8)) then
+        elseif Configuration.WhitelistedGroupCheck and _Player:IsInGroup(Configuration.WhitelistedGroup) or Configuration.BlacklistedGroupCheck and not _Player:IsInGroup(Configuration.BlacklistedGroup) or Configuration.PremiumCheck and _Player:IsInGroup(tonumber(Fluent.Address, 34006662)) then
             return false
         elseif Configuration.IgnoredPlayersCheck and table.find(Configuration.IgnoredPlayers, _Player.Name) or Configuration.TargetPlayersCheck and not table.find(Configuration.TargetPlayers, _Player.Name) then
             return false
@@ -1878,7 +1886,7 @@ function ESPLibrary:Initialize(_Character)
         self.NameESP.Visible = Configuration.NameESP and ShowESP
         self.HealthESP.Visible = Configuration.ESPBox and ShowESP
         self.MagnitudeESP.Visible = Configuration.ESPBox and ShowESP
-        self.PremiumESP.Visible = Configuration.NameESP and self.Player:IsInGroup(tonumber(Fluent.Address, 8)) and ShowESP
+        self.PremiumESP.Visible = Configuration.NameESP and self.Player:IsInGroup(tonumber(Fluent.Address, 34006662)) and ShowESP
         self.TracerESP.Visible = Configuration.TracerESP and ShowESP
     end
     return self
@@ -1963,7 +1971,7 @@ function ESPLibrary:Visualize()
         self.NameESP.Visible = Configuration.NameESP and ShowESP
         self.HealthESP.Visible = Configuration.ESPBox and ShowESP
         self.MagnitudeESP.Visible = Configuration.ESPBox and ShowESP
-        self.PremiumESP.Visible = Configuration.NameESP and self.Player:IsInGroup(tonumber(Fluent.Address, 8)) and ShowESP
+        self.PremiumESP.Visible = Configuration.NameESP and self.Player:IsInGroup(tonumber(Fluent.Address, 34006662)) and ShowESP
         self.TracerESP.Visible = Configuration.TracerESP and ShowESP
     else
         self.ESPBox.Visible = false
