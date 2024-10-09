@@ -887,7 +887,7 @@ do
             })
         end
     })
-
+--[[
     local PremiumChecksSection = Tabs.Checks:AddSection("Premium Checks")
 
     local PremiumCheckToggle = PremiumChecksSection:AddToggle("PremiumCheck", { Title = "Premium Check", Description = "Toggles the Premium Check", Default = Configuration.PremiumCheck })
@@ -899,7 +899,7 @@ do
         Title = "Syu Aimbot 💫PREMIUM💫",
         Content = "✨Upgrade to unlock all Options✨\nContact @0yczs via Discord to buy"
     })
-
+]]
     if getfenv().Drawing then
         Tabs.Visuals = Window:AddTab({ Title = "Visuals", Icon = "box" })
 
