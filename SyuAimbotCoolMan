@@ -265,8 +265,8 @@ end)
 
 do
     local Window = Fluent:CreateWindow({
-        Title = "Syu Aimbot",
-        SubTitle = "By: Saints0tsdn (@Syu0yczs)",
+        Title = "Syu Aimbot IL",
+        SubTitle = "נוצר על ידי: Saints0tsdn (@Syu0yczs)",
         TabWidth = UISettings.TabWidth,
         Size = UDim2.fromOffset(table.unpack(UISettings.Size)),
         Theme = UISettings.Theme,
@@ -274,12 +274,12 @@ do
         MinimizeKey = UISettings.MinimizeKey
     })
 
-    local Tabs = { Aimbot = Window:AddTab({ Title = "Aimbot", Icon = "crosshair" }) }
+    local Tabs = { Aimbot = Window:AddTab({ Title = "איימבוט", Icon = "crosshair" }) }
 
     Window:SelectTab(1)
     local AimbotSection = Tabs.Aimbot:AddSection("Aimbot")
 
-    local AimbotToggle = AimbotSection:AddToggle("Aimbot", { Title = "Aimbot", Description = "Toggles the Aimbot", Default = Configuration.Aimbot })
+    local AimbotToggle = AimbotSection:AddToggle("Aimbot", { Title = "איימבוט / איימ אסיסט", Description = "Toggles the Aimbot", Default = Configuration.Aimbot })
     AimbotToggle:OnChanged(function(Value)
         Configuration.Aimbot = Value
         if not IsComputer then
@@ -288,14 +288,14 @@ do
     end)
 
     if IsComputer then
-        local OnePressAimingModeToggle = AimbotSection:AddToggle("OnePressAimingMode", { Title = "One-Press Mode", Description = "Uses the One-Press Mode instead of the Holding Mode", Default = Configuration.OnePressAimingMode })
+        local OnePressAimingModeToggle = AimbotSection:AddToggle("OnePressAimingMode", { Title = "מצב בלחיצה אחת", Description = "משתמש במצב לחיצה אחת במקום במצב החזקה", Default = Configuration.OnePressAimingMode })
         OnePressAimingModeToggle:OnChanged(function(Value)
             Configuration.OnePressAimingMode = Value
         end)
 
         local AimKeybind = AimbotSection:AddKeybind("AimKey", {
-            Title = "Aim Key",
-            Description = "Changes the Aim Key",
+            Title = "כפתור הפעלה",
+            Description = "שינוי כפתור ההפעלה לאיימבוט",
             Default = Configuration.AimKey,
             ChangedCallback = function(Value)
                 Configuration.AimKey = Value
@@ -305,8 +305,8 @@ do
     end
 
     local AimModeDropdown = AimbotSection:AddDropdown("AimMode", {
-        Title = "Aim Mode",
-        Description = "Changes the Aim Mode",
+        Title = "מצב כיוון",
+        Description = "שנה את מצב הכיוון ",
         Values = { "Camera" },
         Default = Configuration.AimMode,
         Callback = function(Value)
@@ -324,8 +324,8 @@ do
         AimModeDropdown:BuildDropdownList()
 
         local SilentAimMethodsDropdown = AimbotSection:AddDropdown("SilentAimMethods", {
-            Title = "Silent Aim Methods",
-            Description = "Sets the Silent Aim Methods",
+            Title = "סיילנט איימ",
+            Description = "מגדיר את שיטות המטרה של הסיילנט איימ",
             Values = { "Mouse.Hit / Mouse.Target", "GetMouseLocation", "Raycast", "FindPartOnRay", "FindPartOnRayWithIgnoreList", "FindPartOnRayWithWhitelist" },
             Multi = true,
             Default = Configuration.SilentAimMethods
@@ -340,8 +340,8 @@ do
         end)
 
         AimbotSection:AddSlider("SilentAimChance", {
-            Title = "Silent Aim Chance",
-            Description = "Changes the Hit Chance for Silent Aim",
+            Title = "סיכויי סיילנט איימ",
+            Description = "שנה את סיכויי הפגיעה של הסיילנט איימ",
             Default = Configuration.SilentAimChance,
             Min = 1,
             Max = 100,
@@ -354,14 +354,14 @@ do
         ShowWarning = true
     end
 
-    local OffAfterKillToggle = AimbotSection:AddToggle("OffAfterKill", { Title = "Off After Kill", Description = "Disables the Aiming Mode after killing a Target", Default = Configuration.OffAfterKill })
+    local OffAfterKillToggle = AimbotSection:AddToggle("OffAfterKill", { Title = "כבה לאחר הריגה", Description = "משבית את מצב הכוונה לאחר הריגת יעד", Default = Configuration.OffAfterKill })
     OffAfterKillToggle:OnChanged(function(Value)
         Configuration.OffAfterKill = Value
     end)
 
     local AimPartDropdown = AimbotSection:AddDropdown("AimPart", {
-        Title = "Aim Part",
-        Description = "Changes the Aim Part",
+        Title = "לאן לכוון",
+        Description = "שנה את הצורה שתפגע בשחקן (בראש או בשחקן עצמו)",
         Values = Configuration.AimPartDropdownValues,
         Default = Configuration.AimPart,
         Callback = function(Value)
@@ -379,16 +379,16 @@ do
         end
     end)
 
-    local RandomAimPartToggle = AimbotSection:AddToggle("RandomAimPart", { Title = "Random Aim Part", Description = "Selects every second a Random Aim Part from Dropdown", Default = Configuration.RandomAimPart })
+    local RandomAimPartToggle = AimbotSection:AddToggle("RandomAimPart", { Title = "חלק מטרה אקראית", Description = "בוחר בכל שנייה חלק מטרה אקראית מהתפריט הנפתח", Default = Configuration.RandomAimPart })
     RandomAimPartToggle:OnChanged(function(Value)
         Configuration.RandomAimPart = Value
     end)
 
     AimbotSection:AddInput("AddAimPart", {
-        Title = "Add Aim Part",
-        Description = "After typing, press Enter",
+        Title = "הוסף חלק מטרה",
+        Description = "לאחר ההקלדה, הקש Enter",
         Finished = true,
-        Placeholder = "Part Name",
+        Placeholder = "שם החלק",
         Callback = function(Value)
             if #Value > 0 and not table.find(Configuration.AimPartDropdownValues, Value) then
                 table.insert(Configuration.AimPartDropdownValues, Value)
@@ -398,10 +398,10 @@ do
     })
 
     AimbotSection:AddInput("RemoveAimPart", {
-        Title = "Remove Aim Part",
-        Description = "After typing, press Enter",
+        Title = "הסר את חלק המטרה",
+        Description = "לאחר ההקלדה, הקש Enter",
         Finished = true,
-        Placeholder = "Part Name",
+        Placeholder = "שם החלק",
         Callback = function(Value)
             if #Value > 0 and table.find(Configuration.AimPartDropdownValues, Value) then
                 if Configuration.AimPart == Value then
@@ -418,14 +418,14 @@ do
 
     local AimOffsetSection = Tabs.Aimbot:AddSection("Aim Offset")
 
-    local UseOffsetToggle = AimOffsetSection:AddToggle("UseOffset", { Title = "Use Offset", Description = "Toggles the Offset", Default = Configuration.UseOffset })
+    local UseOffsetToggle = AimOffsetSection:AddToggle("UseOffset", { Title = "השתמש ב-Offset", Description = "מדליק את ההיסט", Default = Configuration.UseOffset })
     UseOffsetToggle:OnChanged(function(Value)
         Configuration.UseOffset = Value
     end)
 
     AimOffsetSection:AddDropdown("OffsetType", {
-        Title = "Offset Type",
-        Description = "Changes the Offset Type",
+        Title = "סוג היסט",
+        Description = "משנה את סוג ההיסט",
         Values = { "Static", "Dynamic", "Static & Dynamic" },
         Default = Configuration.OffsetType,
         Callback = function(Value)
@@ -434,8 +434,8 @@ do
     })
 
     AimOffsetSection:AddSlider("StaticOffsetIncrement", {
-        Title = "Static Offset Increment",
-        Description = "Changes the Static Offset Increment",
+        Title = "תוספת היסט סטטית",
+        Description = "Cתולה את תוספת ההיסט הסטטית",
         Default = Configuration.StaticOffsetIncrement,
         Min = 1,
         Max = 50,
@@ -446,8 +446,8 @@ do
     })
 
     AimOffsetSection:AddSlider("DynamicOffsetIncrement", {
-        Title = "Dynamic Offset Increment",
-        Description = "Changes the Dynamic Offset Increment",
+        Title = "תוספת היסט דינמית",
+        Description = "משנה את תוספת ההיסט הדינמית",
         Default = Configuration.DynamicOffsetIncrement,
         Min = 1,
         Max = 50,
@@ -457,14 +457,14 @@ do
         end
     })
 
-    local AutoOffsetToggle = AimOffsetSection:AddToggle("AutoOffset", { Title = "Auto Offset", Description = "Toggles the Auto Offset", Default = Configuration.AutoOffset })
+    local AutoOffsetToggle = AimOffsetSection:AddToggle("AutoOffset", { Title = "היסט אוטומטי", Description = "מדליק את ההיסט האוטומטי", Default = Configuration.AutoOffset })
     AutoOffsetToggle:OnChanged(function(Value)
         Configuration.AutoOffset = Value
     end)
 
     AimOffsetSection:AddSlider("MaxAutoOffset", {
-        Title = "Max Auto Offset",
-        Description = "Changes the Max Auto Offset",
+        Title = "היסט אוטומטי מקסימלי",
+        Description = "משנה את ההיסט האוטומטי המקסימלי",
         Default = Configuration.MaxAutoOffset,
         Min = 1,
         Max = 50,
@@ -476,14 +476,14 @@ do
 
     local SensitivityNoiseSection = Tabs.Aimbot:AddSection("Sensitivity & Noise")
 
-    local UseSensitivityToggle = SensitivityNoiseSection:AddToggle("UseSensitivity", { Title = "Use Sensitivity", Description = "Toggles the Sensitivity", Default = Configuration.UseSensitivity })
+    local UseSensitivityToggle = SensitivityNoiseSection:AddToggle("UseSensitivity", { Title = "שימוש ב-Sensitivity", Description = "מפעיל את ה-Sensitivity", Default = Configuration.UseSensitivity })
     UseSensitivityToggle:OnChanged(function(Value)
         Configuration.UseSensitivity = Value
     end)
 
     SensitivityNoiseSection:AddSlider("Sensitivity", {
         Title = "Sensitivity",
-        Description = "Smoothes out the Mouse / Camera Movements when Aiming",
+        Description = "מחליק את תנועות העכבר / המצלמה בעת הכוונה",
         Default = Configuration.Sensitivity,
         Min = 1,
         Max = 100,
@@ -493,14 +493,14 @@ do
         end
     })
 
-    local UseNoiseToggle = SensitivityNoiseSection:AddToggle("UseNoise", { Title = "Use Noise", Description = "Toggles the Camera Shaking when Aiming", Default = Configuration.UseNoise })
+    local UseNoiseToggle = SensitivityNoiseSection:AddToggle("UseNoise", { Title = "השתמש ברעש", Description = "מדליק את המצלמה רועדת בעת מכוון", Default = Configuration.UseNoise })
     UseNoiseToggle:OnChanged(function(Value)
         Configuration.UseNoise = Value
     end)
 
     SensitivityNoiseSection:AddSlider("NoiseFrequency", {
-        Title = "Noise Frequency",
-        Description = "Changes the Noise Frequency",
+        Title = "תדר רעש",
+        Description = "משנה את תדר הרעש",
         Default = Configuration.NoiseFrequency,
         Min = 1,
         Max = 100,
@@ -514,30 +514,30 @@ do
         Tabs.TriggerBot = Window:AddTab({ Title = "TriggerBot", Icon = "target" })
 
         Tabs.TriggerBot:AddParagraph({
-            Title = "Syu Aimbot",
-            Content = "Made by: Saints0tsdn (@Syu0yczs)"
+            Title = "Syu Aimbot IL",
+            Content = "נוצר על ידי: Saints0tsdn (@Syu0yczs)"
         })
 
         local TriggerBotSection = Tabs.TriggerBot:AddSection("TriggerBot")
 
-        local TriggerBotToggle = TriggerBotSection:AddToggle("TriggerBot", { Title = "TriggerBot", Description = "Toggles the TriggerBot", Default = Configuration.TriggerBot })
+        local TriggerBotToggle = TriggerBotSection:AddToggle("TriggerBot", { Title = "טריגר אוטומטי", Description = "הפעל טריגר אוטומטי", Default = Configuration.TriggerBot })
         TriggerBotToggle:OnChanged(function(Value)
             Configuration.TriggerBot = Value
         end)
 
-        local OnePressTriggeringModeToggle = TriggerBotSection:AddToggle("OnePressTriggeringMode", { Title = "One-Press Mode", Description = "Uses the One-Press Mode instead of the Holding Mode", Default = Configuration.OnePressTriggeringMode })
+        local OnePressTriggeringModeToggle = TriggerBotSection:AddToggle("OnePressTriggeringMode", { Title = "מצב בלחיצה אחת", Description = "משתמש במצב לחיצה אחת במקום במצב החזקה", Default = Configuration.OnePressTriggeringMode })
         OnePressTriggeringModeToggle:OnChanged(function(Value)
             Configuration.OnePressTriggeringMode = Value
         end)
 
-        local SmartTriggerBotToggle = TriggerBotSection:AddToggle("SmartTriggerBot", { Title = "Smart TriggerBot", Description = "Uses the TriggerBot only when Aiming", Default = Configuration.SmartTriggerBot })
+        local SmartTriggerBotToggle = TriggerBotSection:AddToggle("SmartTriggerBot", { Title = "טריגר אוטומטי חכם", Description = "משתמש בטריגר אוטומטי רק כאשר מכוון", Default = Configuration.SmartTriggerBot })
         SmartTriggerBotToggle:OnChanged(function(Value)
             Configuration.SmartTriggerBot = Value
         end)
 
         local TriggerKeybind = TriggerBotSection:AddKeybind("TriggerKey", {
-            Title = "Trigger Key",
-            Description = "Changes the Trigger Key",
+            Title = "מפתח הפעלת הטריגר",
+            Description = "משנה את מפתח ההדק",
             Default = Configuration.TriggerKey,
             ChangedCallback = function(Value)
                 Configuration.TriggerKey = Value
@@ -548,35 +548,35 @@ do
         ShowWarning = true
     end
 
-    Tabs.Checks = Window:AddTab({ Title = "Checks", Icon = "list-checks" })
+    Tabs.Checks = Window:AddTab({ Title = "מעקב", Icon = "list-checks" })
 
     Tabs.Checks:AddParagraph({
-        Title = "Syu Aimbot",
-        Content = "By Saints0tsdn (@Syu0yczs)"
+        Title = "Syu Aimbot IL",
+        Content = "נוצר על ידי: Saints0tsdn (@Syu0yczs)"
     })
 
     local SimpleChecksSection = Tabs.Checks:AddSection("Simple Checks")
 
-    local AliveCheckToggle = SimpleChecksSection:AddToggle("AliveCheck", { Title = "Alive Check", Description = "Toggles the Alive Check", Default = Configuration.AliveCheck })
+    local AliveCheckToggle = SimpleChecksSection:AddToggle("AliveCheck", { Title = "מעקב חיים", Description = "אם השחקן לא בחיים האיימבוט לא יכוון עליו", Default = Configuration.AliveCheck })
     AliveCheckToggle:OnChanged(function(Value)
         Configuration.AliveCheck = Value
     end)
 
-    local GodCheckToggle = SimpleChecksSection:AddToggle("GodCheck", { Title = "God Check", Description = "Toggles the God Check", Default = Configuration.GodCheck })
+    local GodCheckToggle = SimpleChecksSection:AddToggle("GodCheck", { Title = "מעקב גוד מוד", Description = "אם השחקן על גוד מוד האיימבוט לא יכוון עליו", Default = Configuration.GodCheck })
     GodCheckToggle:OnChanged(function(Value)
         Configuration.GodCheck = Value
     end)
 
-    local TeamCheckToggle = SimpleChecksSection:AddToggle("TeamCheck", { Title = "Team Check", Description = "Toggles the Team Check", Default = Configuration.TeamCheck })
+    local TeamCheckToggle = SimpleChecksSection:AddToggle("TeamCheck", { Title = "מעקב קבוצה", Description = "אם השחקנים אתכם בקבוצה / טים, האיימבוט לא יכוון עליהם", Default = Configuration.TeamCheck })
     TeamCheckToggle:OnChanged(function(Value)
         Configuration.TeamCheck = Value
     end)
 
-    local FriendCheckToggle = SimpleChecksSection:AddToggle("FriendCheck", { Title = "Friend Check", Description = "Toggles the Friend Check", Default = Configuration.FriendCheck })
+    local FriendCheckToggle = SimpleChecksSection:AddToggle("FriendCheck", { Title = "מעקב חברים", Description = "אם השחקן אצלך בחברים, האיימבוט לא יכוון עליו", Default = Configuration.FriendCheck })
     FriendCheckToggle:OnChanged(function(Value)
         Configuration.FriendCheck = Value
     end)
-
+--[[
     local FollowCheckToggle = SimpleChecksSection:AddToggle("FollowCheck", { Title = "Follow Check", Description = "Toggles the Follow Check", Default = Configuration.FollowCheck })
     FollowCheckToggle:OnChanged(function(Value)
         Configuration.FollowCheck = Value
@@ -586,27 +586,27 @@ do
     VerifiedBadgeCheckToggle:OnChanged(function(Value)
         Configuration.VerifiedBadgeCheck = Value
     end)
-
-    local WallCheckToggle = SimpleChecksSection:AddToggle("WallCheck", { Title = "Wall Check", Description = "Toggles the Wall Check", Default = Configuration.WallCheck })
+]]
+    local WallCheckToggle = SimpleChecksSection:AddToggle("WallCheck", { Title = "מעקב קירות", Description = "אם השחקן מאחוריי קיר, האיימבוט לא יכוון עליו", Default = Configuration.WallCheck })
     WallCheckToggle:OnChanged(function(Value)
         Configuration.WallCheck = Value
     end)
-
+--[[
     local WaterCheckToggle = SimpleChecksSection:AddToggle("WaterCheck", { Title = "Water Check", Description = "Toggles the Water Check if Wall Check is enabled", Default = Configuration.WaterCheck })
     WaterCheckToggle:OnChanged(function(Value)
         Configuration.WaterCheck = Value
     end)
-
+]]
     local AdvancedChecksSection = Tabs.Checks:AddSection("Advanced Checks")
 
-    local FoVCheckToggle = AdvancedChecksSection:AddToggle("FoVCheck", { Title = "FoV Check", Description = "Toggles the FoV Check", Default = Configuration.FoVCheck })
+    local FoVCheckToggle = AdvancedChecksSection:AddToggle("FoVCheck", { Title = "בדיקת FoV", Description = "מדליק את בדיקת FoV", Default = Configuration.FoVCheck })
     FoVCheckToggle:OnChanged(function(Value)
         Configuration.FoVCheck = Value
     end)
 
     AdvancedChecksSection:AddSlider("FoVRadius", {
-        Title = "FoV Radius",
-        Description = "Changes the FoV Radius",
+        Title = "רדיוס FoV",
+        Description = "משנה את רדיוס FoV",
         Default = Configuration.FoVRadius,
         Min = 10,
         Max = 1000,
@@ -616,14 +616,14 @@ do
         end
     })
 
-    local MagnitudeCheckToggle = AdvancedChecksSection:AddToggle("MagnitudeCheck", { Title = "Magnitude Check", Description = "Toggles the Magnitude Check", Default = Configuration.MagnitudeCheck })
+    local MagnitudeCheckToggle = AdvancedChecksSection:AddToggle("MagnitudeCheck", { Title = "בדיקת גודל", Description = "מדליק את בדיקת הגודל", Default = Configuration.MagnitudeCheck })
     MagnitudeCheckToggle:OnChanged(function(Value)
         Configuration.MagnitudeCheck = Value
     end)
 
     AdvancedChecksSection:AddSlider("TriggerMagnitude", {
-        Title = "Trigger Magnitude",
-        Description = "Distance between the Native and the Target Character",
+        Title = "גודל טריגר",
+        Description = "מרחק בין היליד לדמות היעד",
         Default = Configuration.TriggerMagnitude,
         Min = 10,
         Max = 1000,
@@ -633,14 +633,14 @@ do
         end
     })
 
-    local TransparencyCheckToggle = AdvancedChecksSection:AddToggle("TransparencyCheck", { Title = "Transparency Check", Description = "Toggles the Transparency Check", Default = Configuration.TransparencyCheck })
+    local TransparencyCheckToggle = AdvancedChecksSection:AddToggle("TransparencyCheck", { Title = "בדיקת שקיפות", Description = "מדליק את בדיקת השקיפות", Default = Configuration.TransparencyCheck })
     TransparencyCheckToggle:OnChanged(function(Value)
         Configuration.TransparencyCheck = Value
     end)
 
     AdvancedChecksSection:AddSlider("IgnoredTransparency", {
-        Title = "Ignored Transparency",
-        Description = "Target is ignored if its Transparency is > than / = to the set one",
+        Title = "התעלמו משקיפות",
+        Description = "מתעלמים מהיעד אם השקיפות שלו היא > מאשר / = לזו שנקבעה",
         Default = Configuration.IgnoredTransparency,
         Min = 0.1,
         Max = 1,
@@ -649,8 +649,8 @@ do
             Configuration.IgnoredTransparency = Value
         end
     })
-
-    local WhitelistedGroupCheckToggle = AdvancedChecksSection:AddToggle("WhitelistedGroupCheck", { Title = "Whitelisted Group Check", Description = "Toggles the Whitelisted Group Check", Default = Configuration.WhitelistedGroupCheck })
+--[[
+    local WhitelistedGroupCheckToggle = AdvancedChecksSection:AddToggle("WhitelistedGroupCheck", { Title = "בדיקה קבוצתית ברשימת החברים", Description = "Toggles the Whitelisted Group Check", Default = Configuration.WhitelistedGroupCheck })
     WhitelistedGroupCheckToggle:OnChanged(function(Value)
         Configuration.WhitelistedGroupCheck = Value
     end)
@@ -683,10 +683,10 @@ do
             Configuration.BlacklistedGroup = #tostring(Value) > 0 and tonumber(Value) or 0
         end
     })
-
+]]
     local ExpertChecksSection = Tabs.Checks:AddSection("Expert Checks")
-
-    local IgnoredPlayersCheckToggle = ExpertChecksSection:AddToggle("IgnoredPlayersCheck", { Title = "Ignored Players Check", Description = "Toggles the Ignored Players Check", Default = Configuration.IgnoredPlayersCheck })
+--[[
+    local IgnoredPlayersCheckToggle = ExpertChecksSection:AddToggle("IgnoredPlayersCheck", { Title = "בדיקת התעלמות משחקנים", Description = "מדל את בדיקת השחקנים שהתעלמו", Default = Configuration.IgnoredPlayersCheck })
     IgnoredPlayersCheckToggle:OnChanged(function(Value)
         Configuration.IgnoredPlayersCheck = Value
     end)
@@ -752,7 +752,7 @@ do
         Callback = function()
             IgnoredPlayersDropdown:SetValue({})
             Window:Dialog({
-                Title = "Syu Aimbot",
+                Title = "Syu Aimbot IL",
                 Content = "All Items have been deselected!",
                 Buttons = {
                     {
@@ -776,7 +776,7 @@ do
             end
             IgnoredPlayersDropdown:BuildDropdownList()
             Window:Dialog({
-                Title = "Syu Aimbot",
+                Title = "Syu Aimbot IL",
                 Content = Items == 0 and "Nothing has been cleared!" or Items == 1 and "1 Item has been cleared!" or string.format("%s Items have been cleared!", Items),
                 Buttons = {
                     {
@@ -853,7 +853,7 @@ do
         Callback = function()
             TargetPlayersDropdown:SetValue({})
             Window:Dialog({
-                Title = "Syu Aimbot",
+                Title = "Syu Aimbot IL",
                 Content = "All Items have been deselected!",
                 Buttons = {
                     {
@@ -877,7 +877,7 @@ do
             end
             TargetPlayersDropdown:BuildDropdownList()
             Window:Dialog({
-                Title = "Syu Aimbot",
+                Title = "Syu Aimbot IL",
                 Content = Items == 0 and "Nothing has been cleared!" or Items == 1 and "1 Item has been cleared!" or string.format("%s Items have been cleared!", Items),
                 Buttons = {
                     {
@@ -886,7 +886,7 @@ do
                 }
             })
         end
-    })
+    })]]
 --[[
     local PremiumChecksSection = Tabs.Checks:AddSection("Premium Checks")
 
@@ -896,29 +896,29 @@ do
     end)
 
     PremiumChecksSection:AddParagraph({
-        Title = "Syu Aimbot 💫PREMIUM💫",
+        Title = "Syu Aimbot IL 💫PREMIUM💫",
         Content = "✨Upgrade to unlock all Options✨\nContact @0yczs via Discord to buy"
     })
 ]]
     if getfenv().Drawing then
-        Tabs.Visuals = Window:AddTab({ Title = "Visuals", Icon = "box" })
+        Tabs.Visuals = Window:AddTab({ Title = "ויזואלי", Icon = "box" })
 
         Tabs.Visuals:AddParagraph({
-            Title = "Syu Aimbot",
-            Content = "By Saints0tsdn (@Syu0yczs)"
+            Title = "Syu Aimbot IL",
+            Content = "נוצר על ידי: Saints0tsdn (@Syu0yczs)"
         })
 
         local FoVSection = Tabs.Visuals:AddSection("FoV")
 
-        local FoVToggle = FoVSection:AddToggle("FoV", { Title = "FoV", Description = "Graphically Displays the FoV Radius", Default = Configuration.FoV })
+        local FoVToggle = FoVSection:AddToggle("FoV", { Title = "FoV", Description = "מציג באופן גרפי את רדיוס FoV", Default = Configuration.FoV })
         FoVToggle:OnChanged(function(Value)
             Configuration.FoV = Value
         end)
 
         if IsComputer then
             local FoVKeybind = FoVSection:AddKeybind("FoVKey", {
-                Title = "FoV Key",
-                Description = "Changes the FoV Key",
+                Title = "מפתח FoV",
+                Description = "משנה את מפתח FoV",
                 Default = Configuration.FoVKey,
                 ChangedCallback = function(Value)
                     Configuration.FoVKey = Value
@@ -928,8 +928,8 @@ do
         end
 
         FoVSection:AddSlider("FoVThickness", {
-            Title = "FoV Thickness",
-            Description = "Changes the FoV Thickness",
+            Title = "עובי FoV",
+            Description = "משנה את עובי FoV",
             Default = Configuration.FoVThickness,
             Min = 1,
             Max = 10,
@@ -940,8 +940,8 @@ do
         })
 
         FoVSection:AddSlider("FoVOpacity", {
-            Title = "FoV Opacity",
-            Description = "Changes the FoV Opacity",
+            Title = "אטימות FoV",
+            Description = "משנה את אטימות FoV",
             Default = Configuration.FoVOpacity,
             Min = 0.1,
             Max = 1,
@@ -951,14 +951,14 @@ do
             end
         })
 
-        local FoVFilledToggle = FoVSection:AddToggle("FoVFilled", { Title = "FoV Filled", Description = "Makes the FoV Filled", Default = Configuration.FoVFilled })
+        local FoVFilledToggle = FoVSection:AddToggle("FoVFilled", { Title = "FoV מלא", Description = "הופך את ה- FoV למילוי", Default = Configuration.FoVFilled })
         FoVFilledToggle:OnChanged(function(Value)
             Configuration.FoVFilled = Value
         end)
 
         local FoVColourPicker = FoVSection:AddColorpicker("FoVColour", {
-            Title = "FoV Colour",
-            Description = "Changes the FoV Colour",
+            Title = "צבע FoV",
+            Description = "משנה את צבע FoV",
             Default = Configuration.FoVColour,
             Callback = function(Value)
                 Configuration.FoVColour = Value
@@ -966,16 +966,16 @@ do
         })
 
         local ESPSection = Tabs.Visuals:AddSection("ESP")
-
-        local SmartESPToggle = ESPSection:AddToggle("SmartESP", { Title = "Smart ESP", Description = "Does not ESP the Whitelisted Players", Default = Configuration.SmartESP })
+--[[
+        local SmartESPToggle = ESPSection:AddToggle("SmartESP", { Title = "ESP חכם", Description = "Does not ESP the Whitelisted Players", Default = Configuration.SmartESP })
         SmartESPToggle:OnChanged(function(Value)
             Configuration.SmartESP = Value
         end)
-
+]]
         if IsComputer then
             local ESPKeybind = ESPSection:AddKeybind("ESPKey", {
-                Title = "ESP Key",
-                Description = "Changes the ESP Key",
+                Title = "מפתח ESP",
+                Description = "משנה את מפתח ה-ESP",
                 Default = Configuration.ESPKey,
                 ChangedCallback = function(Value)
                     Configuration.ESPKey = Value
@@ -984,16 +984,16 @@ do
             Configuration.ESPKey = pcall(UserInputService.GetStringForKeyCode, UserInputService, ESPKeybind.Value) and Enum.KeyCode[ESPKeybind.Value] or Enum.UserInputType.MouseButton2
         end
 
-        local ESPBoxToggle = ESPSection:AddToggle("ESPBox", { Title = "ESP Box", Description = "Creates the ESP Box around the Players", Default = Configuration.ESPBox })
+        local ESPBoxToggle = ESPSection:AddToggle("ESPBox", { Title = "תיבת ESP", Description = "יוצר את תיבת ה-ESP סביב השחקנים", Default = Configuration.ESPBox })
         ESPBoxToggle:OnChanged(function(Value)
             Configuration.ESPBox = Value
         end)
 
-        local ESPBoxFilledToggle = ESPSection:AddToggle("ESPBoxFilled", { Title = "ESP Box Filled", Description = "Makes the ESP Box Filled", Default = Configuration.ESPBoxFilled })
+        local ESPBoxFilledToggle = ESPSection:AddToggle("ESPBoxFilled", { Title = "תיבת ESP מלאה", Description = "הופך את תיבת ה-ESP למילוי", Default = Configuration.ESPBoxFilled })
         ESPBoxFilledToggle:OnChanged(function(Value)
             Configuration.ESPBoxFilled = Value
         end)
-
+--[[
         local NameESPToggle = ESPSection:AddToggle("NameESP", { Title = "Name ESP", Description = "Creates the Name ESP above the Players", Default = Configuration.NameESP })
         NameESPToggle:OnChanged(function(Value)
             Configuration.NameESP = Value
@@ -1029,15 +1029,15 @@ do
                 Configuration.NameESPOutlineColour = Value
             end
         })
-
-        local TracerESPToggle = ESPSection:AddToggle("TracerESP", { Title = "Tracer ESP", Description = "Creates the Tracer ESP in the direction of the Players", Default = Configuration.TracerESP })
+]]
+        local TracerESPToggle = ESPSection:AddToggle("TracerESP", { Title = "Tracer ESP", Description = "יוצר לך על המסך קו המראה איפה השחקנים נמצאים", Default = Configuration.TracerESP })
         TracerESPToggle:OnChanged(function(Value)
             Configuration.TracerESP = Value
         end)
 
         ESPSection:AddSlider("ESPThickness", {
-            Title = "ESP Thickness",
-            Description = "Changes the ESP Thickness",
+            Title = "עובי ESP",
+            Description = "משנה את עובי ה-ESP",
             Default = Configuration.ESPThickness,
             Min = 1,
             Max = 10,
@@ -1048,8 +1048,8 @@ do
         })
 
         ESPSection:AddSlider("ESPOpacity", {
-            Title = "ESP Opacity",
-            Description = "Changes the ESP Opacity",
+            Title = "אטימות ESP",
+            Description = "משנה את אטימות ה-ESP",
             Default = Configuration.ESPOpacity,
             Min = 0.1,
             Max = 1,
@@ -1060,22 +1060,22 @@ do
         })
 
         local ESPColourPicker = ESPSection:AddColorpicker("ESPColour", {
-            Title = "ESP Colour",
-            Description = "Changes the ESP Colour",
+            Title = "צבע ESP",
+            Description = "משנה את צבע ה-ESP",
             Default = Configuration.ESPColour,
             Callback = function(Value)
                 Configuration.ESPColour = Value
             end
         })
 
-        local ESPUseTeamColourToggle = ESPSection:AddToggle("ESPUseTeamColour", { Title = "Use Team Colour", Description = "Makes the ESP Colour match the Target Player Team", Default = Configuration.ESPUseTeamColour })
+        local ESPUseTeamColourToggle = ESPSection:AddToggle("ESPUseTeamColour", { Title = "השתמש בצבע צוות", Description = "גורם לצבע ה-ESP להתאים לצוות שחקן היעד", Default = Configuration.ESPUseTeamColour })
         ESPUseTeamColourToggle:OnChanged(function(Value)
             Configuration.ESPUseTeamColour = Value
         end)
 
         local VisualsSection = Tabs.Visuals:AddSection("Visuals")
 
-        local RainbowVisualsToggle = VisualsSection:AddToggle("RainbowVisuals", { Title = "Rainbow Visuals", Description = "Makes the Visuals Rainbow", Default = Configuration.RainbowVisuals })
+        local RainbowVisualsToggle = VisualsSection:AddToggle("RainbowVisuals", { Title = "צבע ויזואלי - צבעוני", Description = "הופך את הויזואלים לצבעוני", Default = Configuration.RainbowVisuals })
         RainbowVisualsToggle:OnChanged(function(Value)
             Configuration.RainbowVisuals = Value
         end)
@@ -1095,8 +1095,8 @@ do
         end)
 
         VisualsSection:AddSlider("RainbowDelay", {
-            Title = "Rainbow Delay",
-            Description = "Changes the Rainbow Delay",
+            Title = "מהירות הצבע",
+            Description = "שנה את מהירות הצבע המתחלף (1 - איטי, 0.1 - מהיר)",
             Default = Configuration.RainbowDelay,
             Min = 0.1,
             Max = 1,
@@ -1109,18 +1109,18 @@ do
         ShowWarning = true
     end
 
-    Tabs.Settings = Window:AddTab({ Title = "Settings", Icon = "settings" })
+    Tabs.Settings = Window:AddTab({ Title = "הגדרות", Icon = "settings" })
 
     Tabs.Settings:AddParagraph({
-        Title = "Syu Aimbot",
-        Content = "By Saints0tsdn (@Syu0yczs)"
+        Title = "Syu Aimbot IL",
+        Content = "נוצר על ידי: Saints0tsdn (@Syu0yczs)"
     })
 
     local UISection = Tabs.Settings:AddSection("UI")
 
     UISection:AddDropdown("Theme", {
-        Title = "Theme",
-        Description = "Changes the UI Theme",
+        Title = "עיצוב",
+        Description = "שנה את עיצוב היו אי",
         Values = Fluent.Themes,
         Default = Fluent.Theme,
         Callback = function(Value)
@@ -1132,25 +1132,25 @@ do
 
     if Fluent.UseAcrylic then
         UISection:AddToggle("Acrylic", {
-            Title = "Acrylic",
-            Description = "Blurred Background requires Graphic Quality >= 8",
+            Title = "אקרילי",
+            Description = "רקע מטושטש דורש איכות גרפית >= 8",
             Default = Fluent.Acrylic,
             Callback = function(Value)
                 if not Value or not UISettings.ShowWarnings then
                     Fluent:ToggleAcrylic(Value)
                 elseif UISettings.ShowWarnings then
                     Window:Dialog({
-                        Title = "Warning",
-                        Content = "This Option can be detected! Activate it anyway?",
+                        Title = "אזהרה!",
+                        Content = "ניתן לזהות אפשרות זו! להפעיל אותו בכל זאת?",
                         Buttons = {
                             {
-                                Title = "Confirm",
+                                Title = "אישור",
                                 Callback = function()
                                     Fluent:ToggleAcrylic(Value)
                                 end
                             },
                             {
-                                Title = "Cancel",
+                                Title = "ביטול",
                                 Callback = function()
                                     Fluent.Options.Acrylic:SetValue(false)
                                 end
@@ -1163,8 +1163,8 @@ do
     end
 
     UISection:AddToggle("Transparency", {
-        Title = "Transparency",
-        Description = "Makes the UI Transparent",
+        Title = "שקיפות",
+        Description = "הופך את היו אי לשקוף",
         Default = UISettings.Transparency,
         Callback = function(Value)
             Fluent:ToggleTransparency(Value)
@@ -1175,8 +1175,8 @@ do
 
     if IsComputer then
         UISection:AddKeybind("MinimizeKey", {
-            Title = "Minimize Key",
-            Description = "Changes the Minimize Key",
+            Title = "מפתח שימוש",
+            Description = "שנה את מפתח פתיחה וסגירה של היו אי",
             Default = Fluent.MinimizeKey,
             ChangedCallback = function(Value)
                 UISettings.MinimizeKey = pcall(UserInputService.GetStringForKeyCode, UserInputService, Value) and UserInputService:GetStringForKeyCode(Value) or "RMB"
@@ -1188,14 +1188,14 @@ do
 
     local NotificationsSection = Tabs.Settings:AddSection("Notifications")
 
-    local NotificationsToggle = NotificationsSection:AddToggle("ShowNotifications", { Title = "Show Notifications", Description = "Toggles the Notifications Show", Default = UISettings.ShowNotifications })
+    local NotificationsToggle = NotificationsSection:AddToggle("ShowNotifications", { Title = "הצג התראות", Description = "מדליק את הצגת ההתראות בצד המסך", Default = UISettings.ShowNotifications })
     NotificationsToggle:OnChanged(function(Value)
         Fluent.ShowNotifications = Value
         UISettings.ShowNotifications = Value
         InterfaceManager:ExportSettings()
     end)
 
-    local WarningsToggle = NotificationsSection:AddToggle("ShowWarnings", { Title = "Show Warnings", Description = "Toggles the Security Warnings Show", Default = UISettings.ShowWarnings })
+    local WarningsToggle = NotificationsSection:AddToggle("ShowWarnings", { Title = "הצג אזהרות", Description = "מדליק את הצגת אזהרות האבטחה", Default = UISettings.ShowWarnings })
     WarningsToggle:OnChanged(function(Value)
         UISettings.ShowWarnings = Value
         InterfaceManager:ExportSettings()
@@ -1204,19 +1204,19 @@ do
     local PerformanceSection = Tabs.Settings:AddSection("Performance")
 
     PerformanceSection:AddDropdown("RenderingMode", {
-        Title = "Rendering Mode",
-        Description = "Changes the Rendering Mode",
+        Title = "מצב עיבוד",
+        Description = "משנה את מצב העיבוד",
         Values = { "Heartbeat", "RenderStepped", "Stepped" },
         Default = UISettings.RenderingMode,
         Callback = function(Value)
             UISettings.RenderingMode = Value
             InterfaceManager:ExportSettings()
             Window:Dialog({
-                Title = "Syu Aimbot",
-                Content = "Changes will take effect after the Restart!",
+                Title = "Syu Aimbot IL",
+                Content = "השינויים ייכנסו לתוקף לאחר ההפעלה מחדש!",
                 Buttons = {
                     {
-                        Title = "Confirm"
+                        Title = "אישור"
                     }
                 }
             })
@@ -1226,20 +1226,20 @@ do
     if getfenv().isfile and getfenv().readfile and getfenv().writefile and getfenv().delfile then
         local ConfigurationManager = Tabs.Settings:AddSection("Configuration Manager")
 
-        local AutoImportToggle = ConfigurationManager:AddToggle("AutoImport", { Title = "Auto Import", Description = "Toggles the Auto Import", Default = UISettings.AutoImport })
+        local AutoImportToggle = ConfigurationManager:AddToggle("AutoImport", { Title = "טעינה אוטומטית", Description = "טעינה אוטומטית של ההגדרות שנשמרו", Default = UISettings.AutoImport })
         AutoImportToggle:OnChanged(function(Value)
             UISettings.AutoImport = Value
             InterfaceManager:ExportSettings()
         end)
 
         ConfigurationManager:AddParagraph({
-            Title = string.format("Manager for %s", game.Name),
-            Content = string.format("Universe ID is %s", game.GameId)
+            Title = string.format("מנהל עבור %s", game.Name),
+            Content = string.format("מזהה היקום הוא %s", game.GameId)
         })
 
         ConfigurationManager:AddButton({
-            Title = "Import Configuration File",
-            Description = "Loads the Game Configuration File",
+            Title = "טעינת ההגדרות",
+            Description = "טוען את ההגדרות האחרונות ששמרת",
             Callback = function()
                 xpcall(function()
                     if getfenv().isfile(string.format("%s.Syu0yczs", game.GameId)) and getfenv().readfile(string.format("%s.Syu0yczs", game.GameId)) then
@@ -1285,32 +1285,32 @@ do
                             end
                         end
                         Window:Dialog({
-                            Title = "Configuration Manager",
-                            Content = string.format("Configuration File %s.Syu0yczs has been successfully loaded!", game.GameId),
+                            Title = "מנהל הגדרות",
+                            Content = string.format("קובץ ההגדרות %s.Syu0yczs נטען בהצלחה! תהנה", game.GameId),
                             Buttons = {
                                 {
-                                    Title = "Confirm"
+                                    Title = "אישור"
                                 }
                             }
                         })
                     else
                         Window:Dialog({
-                            Title = "Configuration Manager",
-                            Content = string.format("Configuration File %s.Syu0yczs could not be found!", game.GameId),
+                            Title = "מנהל ההגדרות",
+                            Content = string.format("קובץ ההגדרות %s.Syu0yczs לא נמצא!", game.GameId),
                             Buttons = {
                                 {
-                                    Title = "Confirm"
+                                    Title = "אישור"
                                 }
                             }
                         })
                     end
                 end, function()
                     Window:Dialog({
-                        Title = "Configuration Manager",
-                        Content = string.format("An Error occurred when loading the Configuration File %s.Syu0yczs", game.GameId),
+                        Title = "מנהל ההגדרות",
+                        Content = string.format("אירעה שגיאה בעת טעינת קובץ התצורה %s.Syu0yczs", game.GameId),
                         Buttons = {
                             {
-                                Title = "Confirm"
+                                Title = "אישור"
                             }
                         }
                     })
@@ -1319,8 +1319,8 @@ do
         })
 
         ConfigurationManager:AddButton({
-            Title = "Export Configuration File",
-            Description = "Overwrites the Game Configuration File",
+            Title = "שמירת ההגדרות",
+            Description = "שומר את ההגדרות שלך (כל השינויים שעשית ישמרו לך לפעם הבאה)",
             Callback = function()
                 xpcall(function()
                     local ExportedConfiguration = { __LAST_UPDATED__ = os.date() }
@@ -1336,21 +1336,21 @@ do
                     ExportedConfiguration = HttpService:JSONEncode(ExportedConfiguration)
                     getfenv().writefile(string.format("%s.Syu0yczs", game.GameId), ExportedConfiguration)
                     Window:Dialog({
-                        Title = "Configuration Manager",
-                        Content = string.format("Configuration File %s.Syu0yczs has been successfully overwritten!", game.GameId),
+                        Title = "מנהל ההגדרות",
+                        Content = string.format("קובץ ההגדרות %s.Syu0yczs נשמר בהצלחה!", game.GameId),
                         Buttons = {
                             {
-                                Title = "Confirm"
+                                Title = "אישור"
                             }
                         }
                     })
                 end, function()
                     Window:Dialog({
-                        Title = "Configuration Manager",
-                        Content = string.format("An Error occurred when overwriting the Configuration File %s.Syu0yczs", game.GameId),
+                        Title = "מנהל ההגדרות",
+                        Content = string.format("אירעה שגיאה בעת שמירת קובץ התצורה %s.Syu0yczs", game.GameId),
                         Buttons = {
                             {
-                                Title = "Confirm"
+                                Title = "אישור"
                             }
                         }
                     })
@@ -1359,27 +1359,27 @@ do
         })
 
         ConfigurationManager:AddButton({
-            Title = "Delete Configuration File",
-            Description = "Removes the Game Configuration File",
+            Title = "איפוס להגדרות יצרן",
+            Description = "מאפס את כל ההגדרות להגדרות המקוריות של המערכת",
             Callback = function()
                 if getfenv().isfile(string.format("%s.Syu0yczs", game.GameId)) then
                     getfenv().delfile(string.format("%s.Syu0yczs", game.GameId))
                     Window:Dialog({
-                        Title = "Configuration Manager",
-                        Content = string.format("Configuration File %s.Syu0yczs has been successfully removed!", game.GameId),
+                        Title = "מנהל ההגדרות",
+                        Content = string.format("קובץ ההגדרות %s.Syu0yczs אופס להגדרות יצרן בהצלחה!", game.GameId),
                         Buttons = {
                             {
-                                Title = "Confirm"
+                                Title = "אישור"
                             }
                         }
                     })
                 else
                     Window:Dialog({
-                        Title = "Configuration Manager",
-                        Content = string.format("Configuration File %s.Syu0yczs could not be found!", game.GameId),
+                        Title = "מנהל ההגדרות",
+                        Content = string.format("קובץ ההגדרות %s.Syu0yczs לא נמצא!", game.GameId),
                         Buttons = {
                             {
-                                Title = "Confirm"
+                                Title = "אישור"
                             }
                         }
                     })
@@ -1394,16 +1394,16 @@ do
 
     if getfenv().setclipboard then
         DiscordWikiSection:AddButton({
-            Title = "Copy Invite Link",
-            Description = "Paste it into the Browser Tab",
+            Title = "העתק קישור",
+            Description = "הדבק אותו בדיסקורד / בגוגל",
             Callback = function()
                 getfenv().setclipboard("https://discord.gg/HwpPreUHX6")
                 Window:Dialog({
-                    Title = "Syu Aimbot",
-                    Content = "Invite Link has been copied to the Clipboard!",
+                    Title = "Syu Aimbot IL",
+                    Content = "קישור לשרת הדיסקורד הועתק בהצלחה",
                     Buttons = {
                         {
-                            Title = "Confirm"
+                            Title = "אישור"
                         }
                     }
                 })
@@ -1412,28 +1412,28 @@ do
     else
         DiscordWikiSection:AddParagraph({
             Title = "https://discord.gg/HwpPreUHX6",
-            Content = "Discord Server"
+            Content = "שרת הדיסקורד"
         })
     end
 
     if UISettings.ShowWarnings then
         if DEBUG then
             Window:Dialog({
-                Title = "Warning",
-                Content = "Running in Debugging Mode. Some Features may not work properly.",
+                Title = "אזהרה",
+                Content = "פועל במצב ניפוי באגים. ייתכן שחלק מהתכונות לא יפעלו כראוי.",
                 Buttons = {
                     {
-                        Title = "Confirm"
+                        Title = "אישור"
                     }
                 }
             })
         elseif ShowWarning then
             Window:Dialog({
-                Title = "Warning",
-                Content = "Your Software does not support all the Features of Syu Aimbot!",
+                Title = "אזהרה",
+                Content = "התוכנה שלך לא תומכת בכל הפיצרים של Syu Aimbot IL! היתכן שלא כל הפיצרים יעבדו",
                 Buttons = {
                     {
-                        Title = "Confirm"
+                        Title = "אישור"
                     }
                 }
             })
@@ -1447,9 +1447,9 @@ end
 local function Notify(Message)
     if Fluent and typeof(Message) == "string" then
         Fluent:Notify({
-            Title = "Syu Aimbot",
+            Title = "Syu Aimbot IL",
             Content = Message,
-            SubContent = "By Saints0tsdn (@Syu0yczs)",
+            SubContent = "נוצר על ידי: Saints0tsdn (@Syu0yczs)",
             Duration = 1.5
         })
     end
@@ -1490,34 +1490,34 @@ do
                 if Configuration.Aimbot and (Input.KeyCode == Configuration.AimKey or Input.UserInputType == Configuration.AimKey) then
                     if Aiming then
                         FieldsHandler:ResetAimbotFields()
-                        Notify("[Aiming Mode]: OFF")
+                        Notify("[מצב מכוון]: כבוי")
                     else
                         Aiming = true
-                        Notify("[Aiming Mode]: ON")
+                        Notify("[מצב מכוון]: דלוק")
                     end
                 elseif not DEBUG and getfenv().mouse1click and Configuration.TriggerBot and (Input.KeyCode == Configuration.TriggerKey or Input.UserInputType == Configuration.TriggerKey) then
                     if Triggering then
                         Triggering = false
-                        Notify("[Triggering Mode]: OFF")
+                        Notify("[מצב הפעלה]: כבוי")
                     else
                         Triggering = true
-                        Notify("[Triggering Mode]: ON")
+                        Notify("[מצב הפעלה]: דלוק")
                     end
                 elseif not DEBUG and getfenv().Drawing and Configuration.FoV and (Input.KeyCode == Configuration.FoVKey or Input.UserInputType == Configuration.FoVKey) then
                     if ShowingFoV then
                         ShowingFoV = false
-                        Notify("[FoV Show]: OFF")
+                        Notify("[מציג FoV]: כבוי")
                     else
                         ShowingFoV = true
-                        Notify("[FoV Show]: ON")
+                        Notify("[מציג FoV]: דלוק")
                     end
                 elseif not DEBUG and getfenv().Drawing and (Configuration.ESPBox or Configuration.NameESP or Configuration.TracerESP) and (Input.KeyCode == Configuration.ESPKey or Input.UserInputType == Configuration.ESPKey) then
                     if ShowingESP then
                         ShowingESP = false
-                        Notify("[ESP Show]: OFF")
+                        Notify("[מציג ESP]: כבוי")
                     else
                         ShowingESP = true
-                        Notify("[ESP Show]: ON")
+                        Notify("[מציג ESP]: דלוק")
                     end
                 end
             end
@@ -1529,10 +1529,10 @@ do
             elseif not UserInputService:GetFocusedTextBox() then
                 if Aiming and not Configuration.OnePressAimingMode and (Input.KeyCode == Configuration.AimKey or Input.UserInputType == Configuration.AimKey) then
                     FieldsHandler:ResetAimbotFields()
-                    Notify("[Aiming Mode]: OFF")
+                    Notify("[מצב מכוון]: כבוי")
                 elseif Triggering and not Configuration.OnePressTriggeringMode and (Input.KeyCode == Configuration.TriggerKey or Input.UserInputType == Configuration.TriggerKey) then
                     Triggering = false
-                    Notify("[Triggering Mode]: OFF")
+                    Notify("[מצב הפעלה]: כבוי")
                 end
             end
         end)
