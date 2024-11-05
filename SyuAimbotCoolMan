@@ -150,6 +150,8 @@ Configuration.WallCheck = ImportedConfiguration["WallCheck"] or false
 Configuration.WaterCheck = ImportedConfiguration["WaterCheck"] or false
 
 Configuration.FoVCheck = ImportedConfiguration["FoVCheck"] or false
+Configuration.SilentAimFoVCheck = ImportedConfiguration["SilentAimFoVCheck"] or false
+Configuration.SilentAimFoVRadius = ImportedConfiguration["SilentAimFoVRadius"] or 100
 Configuration.FoVRadius = ImportedConfiguration["FoVRadius"] or 100
 Configuration.MagnitudeCheck = ImportedConfiguration["MagnitudeCheck"] or false
 Configuration.TriggerMagnitude = ImportedConfiguration["TriggerMagnitude"] or 500
