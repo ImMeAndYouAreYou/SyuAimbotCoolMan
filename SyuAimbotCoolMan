@@ -264,7 +264,6 @@ end)
 --! UI Initializer
 
 do
-    -- Create the main window for the exploit GUI
     local Window = Fluent:CreateWindow({
         Title = "Syu Aimbot",
         SubTitle = "By: Saints0tsdn (@Syu0yczs)",
@@ -275,17 +274,12 @@ do
         MinimizeKey = UISettings.MinimizeKey
     })
 
-    -- Create a single tab for Aimbot
-    local AimbotTab = Window:AddTab({ Title = "Aimbot", Icon = "crosshair" })
-    Window:SelectTab(1)
-    local AimbotSection = AimbotTab:AddSection("Aimbot Settings")
+    local Tabs = { Aimbot = Window:AddTab({ Title = "Aimbot", Icon = "crosshair" }) }
 
-    -- Aimbot toggle
-    local AimbotToggle = AimbotSection:AddToggle("Aimbot", {
-        Title = "Aimbot",
-        Description = "Toggles the Aimbot",
-        Default = Configuration.Aimbot
-    })
+    Window:SelectTab(1)
+    local AimbotSection = Tabs.Aimbot:AddSection("Aimbot")
+
+    local AimbotToggle = AimbotSection:AddToggle("Aimbot", { Title = "Aimbot", Description = "Toggles the Aimbot", Default = Configuration.Aimbot })
     AimbotToggle:OnChanged(function(Value)
         Configuration.Aimbot = Value
         if not IsComputer then
@@ -293,19 +287,12 @@ do
         end
     end)
 
-    -- Additional settings for computer users
     if IsComputer then
-        -- One-Press Aiming Mode toggle
-        local OnePressAimingModeToggle = AimbotSection:AddToggle("OnePressAimingMode", {
-            Title = "One-Press Mode",
-            Description = "Uses the One-Press Mode instead of the Holding Mode",
-            Default = Configuration.OnePressAimingMode
-        })
+        local OnePressAimingModeToggle = AimbotSection:AddToggle("OnePressAimingMode", { Title = "One-Press Mode", Description = "Uses the One-Press Mode instead of the Holding Mode", Default = Configuration.OnePressAimingMode })
         OnePressAimingModeToggle:OnChanged(function(Value)
             Configuration.OnePressAimingMode = Value
         end)
 
-        -- Keybind for aiming
         local AimKeybind = AimbotSection:AddKeybind("AimKey", {
             Title = "Aim Key",
             Description = "Changes the Aim Key",
@@ -317,7 +304,6 @@ do
         Configuration.AimKey = pcall(UserInputService.GetStringForKeyCode, UserInputService, AimKeybind.Value) and Enum.KeyCode[AimKeybind.Value] or Enum.UserInputType.MouseButton2
     end
 
-    -- Dropdown for Aim Mode
     local AimModeDropdown = AimbotSection:AddDropdown("AimMode", {
         Title = "Aim Mode",
         Description = "Changes the Aim Mode",
@@ -327,62 +313,57 @@ do
             Configuration.AimMode = Value
         end
     })
-
-    -- Check if running on a computer to enable mouse aiming
     if getfenv().mousemoverel and IsComputer then
         table.insert(AimModeDropdown.Values, "Mouse")
         AimModeDropdown:BuildDropdownList()
     else
         ShowWarning = true
     end
-
-    -- Silent Aim Settings integrated into the Aimbot section
-    local SilentAimHeader = AimbotSection:AddLabel("Silent Aim Settings")  -- Add a label for clarity
-
     if getfenv().hookmetamethod and getfenv().newcclosure and getfenv().checkcaller and getfenv().getnamecallmethod then
-        -- Silent Aim Methods Dropdown
-        local SilentAimMethodsDropdown = AimbotSection:AddDropdown("SilentAimMethods", {
-            Title = "Silent Aim Methods",
-            Description = "Sets the Silent Aim Methods",
-            Values = {
-                "Mouse.Hit / Mouse.Target",
-                "GetMouseLocation",
-                "Raycast",
-                "FindPartOnRay",
-                "FindPartOnRayWithIgnoreList",
-                "FindPartOnRayWithWhitelist"
-            },
-            Multi = true,
-            Default = Configuration.SilentAimMethods or {},  -- Ensure there's a default value
-        })
-
-        SilentAimMethodsDropdown:OnChanged(function(Value)
-            Configuration.SilentAimMethods = {}
-            for Key, _ in next, Value do
-                if typeof(Key) == "string" then
-                    table.insert(Configuration.SilentAimMethods, Key)
+        -- Check if AimbotSection exists
+        if AimbotSection then
+            table.insert(AimModeDropdown.Values, "Silent")
+            AimModeDropdown:BuildDropdownList()
+    
+            -- Create Silent Aim Methods dropdown
+            local SilentAimMethodsDropdown = AimbotSection:AddDropdown("SilentAimMethods", {
+                Title = "Silent Aim Methods",
+                Description = "Sets the Silent Aim Methods",
+                Values = { "Mouse.Hit / Mouse.Target", "GetMouseLocation", "Raycast", "FindPartOnRay", "FindPartOnRayWithIgnoreList", "FindPartOnRayWithWhitelist" },
+                Multi = true,
+                Default = Configuration.SilentAimMethods or {}  -- Default to empty if nil
+            })
+            
+            -- OnChanged event for Silent Aim Methods
+            SilentAimMethodsDropdown:OnChanged(function(Value)
+                Configuration.SilentAimMethods = {}
+                for Key, _ in next, Value do
+                    if typeof(Key) == "string" then
+                        table.insert(Configuration.SilentAimMethods, Key)
+                    end
                 end
-            end
-        end)
-
-        -- Silent Aim Chance Slider
-        AimbotSection:AddSlider("SilentAimChance", {
-            Title = "Silent Aim Chance",
-            Description = "Changes the Hit Chance for Silent Aim",
-            Default = Configuration.SilentAimChance or 100,  -- Ensure a default value
-            Min = 1,
-            Max = 100,
-            Rounding = 1,
-            Callback = function(Value)
-                Configuration.SilentAimChance = Value
-            end
-        })
+            end)
+    
+            -- Add Silent Aim Chance slider
+            AimbotSection:AddSlider("SilentAimChance", {
+                Title = "Silent Aim Chance",
+                Description = "Changes the Hit Chance for Silent Aim",
+                Default = Configuration.SilentAimChance or 50,  -- Default to 50 if nil
+                Min = 1,
+                Max = 100,
+                Rounding = 1,
+                Callback = function(Value)
+                    Configuration.SilentAimChance = Value
+                end
+            })
+        else
+            print("AimbotSection is not defined!")
+        end
     else
         ShowWarning = true
+        print("Required functions are not available for Silent Aim settings.")
     end
-
-
-
+    
     local OffAfterKillToggle = AimbotSection:AddToggle("OffAfterKill", { Title = "Off After Kill", Description = "Disables the Aiming Mode after killing a Target", Default = Configuration.OffAfterKill })
     OffAfterKillToggle:OnChanged(function(Value)
         Configuration.OffAfterKill = Value
