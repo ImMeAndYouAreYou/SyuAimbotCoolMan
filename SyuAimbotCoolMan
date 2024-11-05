@@ -181,7 +181,7 @@ Configuration.FoVFilled = ImportedConfiguration["FoVFilled"] or false
 Configuration.FoVColour = ImportedConfiguration["FoVColour"] or Color3.fromRGB(255, 255, 255)
 
 Configuration.SilentAimFoV = ImportedConfiguration["SilentAimFoV"] or false
-Configuration.SilentAimFoVKey = ImportedConfiguration["SilentAimFoVKey"] or "Y"
+Configuration.SilentAimFoVKey = ImportedConfiguration["SilentAimFoVKey"] or "."
 Configuration.SilentAimFoVThickness = ImportedConfiguration["SilentAimFoVThickness"] or 2
 Configuration.SilentAimFoVOpacity = ImportedConfiguration["SilentAimFoVOpacity"] or 0.8
 Configuration.SilentAimFoVFilled = ImportedConfiguration["SilentAimFoVFilled"] or false
