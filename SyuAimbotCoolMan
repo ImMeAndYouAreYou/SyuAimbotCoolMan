@@ -319,7 +319,8 @@ do
     else
         ShowWarning = true
     end
--- Create a new tab for Silent Aim
+do
+   -- Create a new tab for Silent Aim
 local SilentAimTab = YourTabContainer:AddTab("Silent Aim", {
     Title = "Silent Aim",
     Description = "Configure Silent Aim settings."
@@ -361,9 +362,11 @@ SilentAimTab:AddSlider("SilentAimChance", {
 })
 
 -- Add warning if necessary
-
+--[[
 if not (getfenv().hookmetamethod and getfenv().newcclosure and getfenv().checkcaller and getfenv().getnamecallmethod) then
     ShowWarning = true
+end
+]]
 end
 
     local OffAfterKillToggle = AimbotSection:AddToggle("OffAfterKill", { Title = "Off After Kill", Description = "Disables the Aiming Mode after killing a Target", Default = Configuration.OffAfterKill })
