@@ -319,7 +319,9 @@ do
     else
         ShowWarning = true
     end
+    print("Checking for silent aim method capabilities...")
     if getfenv().hookmetamethod and getfenv().newcclosure and getfenv().checkcaller and getfenv().getnamecallmethod then
+        print("Silent aim methods capabilities available.")
         table.insert(AimModeDropdown.Values, "Silent")
         AimModeDropdown:BuildDropdownList()
 
@@ -351,6 +353,7 @@ do
             end
         })
     else
+        print("Silent aim methods capabilities not available.")
         ShowWarning = true
     end
 
