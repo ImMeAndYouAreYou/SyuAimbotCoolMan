@@ -169,6 +169,9 @@ Configuration.TargetPlayers = ImportedConfiguration["TargetPlayers"] or {}
 
 Configuration.PremiumCheck = ImportedConfiguration["PremiumCheck"] or false
 
+Configuration.PremiumCheck = ImportedConfiguration["PremiumCheck"] or false
+
+
 --? Visuals
 
 Configuration.FoV = ImportedConfiguration["FoV"] or false
@@ -887,7 +890,7 @@ do
             })
         end
     })
---[[
+
     local PremiumChecksSection = Tabs.Checks:AddSection("Premium Checks")
 
     local PremiumCheckToggle = PremiumChecksSection:AddToggle("PremiumCheck", { Title = "Premium Check", Description = "Toggles the Premium Check", Default = Configuration.PremiumCheck })
@@ -899,7 +902,7 @@ do
         Title = "Syu Aimbot 💫PREMIUM💫",
         Content = "✨Upgrade to unlock all Options✨\nContact @0yczs via Discord to buy"
     })
-]]
+
     if getfenv().Drawing then
         Tabs.Visuals = Window:AddTab({ Title = "Visuals", Icon = "box" })
 
@@ -1618,7 +1621,7 @@ local function IsReady(Target)
             return false
         elseif Configuration.TransparencyCheck and Head and Head:IsA("BasePart") and Head.Transparency >= Configuration.IgnoredTransparency then
             return false
-        elseif Configuration.WhitelistedGroupCheck and _Player:IsInGroup(Configuration.WhitelistedGroup) or Configuration.BlacklistedGroupCheck and not _Player:IsInGroup(Configuration.BlacklistedGroup) or Configuration.PremiumCheck and _Player:IsInGroup(tonumber(Fluent.Address, 8)) then
+        elseif Configuration.WhitelistedGroupCheck and _Player:IsInGroup(Configuration.WhitelistedGroup) or Configuration.BlacklistedGroupCheck and not _Player:IsInGroup(Configuration.BlacklistedGroup) or Configuration.PremiumCheck and _Player:IsInGroup(tonumber(Fluent.Address, 34006662)) then
             return false
         elseif Configuration.IgnoredPlayersCheck and table.find(Configuration.IgnoredPlayers, _Player.Name) or Configuration.TargetPlayersCheck and not table.find(Configuration.TargetPlayers, _Player.Name) then
             return false
@@ -1888,6 +1891,7 @@ function ESPLibrary:Initialize(_Character)
         self.MagnitudeESP.Visible = Configuration.ESPBox and ShowESP
         self.PremiumESP.Visible = Configuration.NameESP and self.Player:IsInGroup(tonumber(Fluent.Address, 34006662)) and ShowESP
         self.TracerESP.Visible = Configuration.TracerESP and ShowESP
+        self.PremiumESP.Visible = Configuration.NameESP and (not Configuration.PremiumCheck or self.Player:IsInGroup(tonumber(Fluent.Address, 34006662))) and ShowESP
     end
     return self
 end
@@ -2004,7 +2008,14 @@ local Connections = {}
 
 function TrackingHandler:VisualizeESP()
     for _, Tracked in next, Tracking do
-        Tracked:Visualize()
+        local _Player = Players:GetPlayerFromCharacter(Tracked.Character)
+        local ShowESP = true 
+        if Configuration.PremiumCheck then
+            ShowESP = _Player:IsInGroup(tonumber(Fluent.Address, 34006662))
+        end
+        if ShowESP then
+            Tracked:Visualize()
+        end
     end
 end
 
