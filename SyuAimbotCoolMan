@@ -275,15 +275,10 @@ do
         MinimizeKey = UISettings.MinimizeKey
     })
 
-    -- Create tabs for Aimbot and Silent Aim
-    local Tabs = {
-        Aimbot = Window:AddTab({ Title = "Aimbot", Icon = "crosshair" }),
-        SilentAim = Window:AddTab({ Title = "Silent Aim", Icon = "target" })
-    }
-
-    -- Select the Aimbot tab by default
+    -- Create a single tab for Aimbot (including Silent Aim)
+    local AimbotTab = Window:AddTab({ Title = "Aimbot", Icon = "crosshair" })
     Window:SelectTab(1)
-    local AimbotSection = Tabs.Aimbot:AddSection("Aimbot")
+    local AimbotSection = AimbotTab:AddSection("Aimbot & Silent Aim Settings")
 
     -- Aimbot toggle
     local AimbotToggle = AimbotSection:AddToggle("Aimbot", {
@@ -341,12 +336,10 @@ do
         ShowWarning = true
     end
 
-    -- Silent Aim Section
-    local SilentAimSection = Tabs.SilentAim:AddSection("Silent Aim Settings")
-
+    -- Silent Aim Settings (Integrated into the same section)
     if getfenv().hookmetamethod and getfenv().newcclosure and getfenv().checkcaller and getfenv().getnamecallmethod then
         -- Silent Aim Methods Dropdown
-        local SilentAimMethodsDropdown = SilentAimSection:AddDropdown("SilentAimMethods", {
+        local SilentAimMethodsDropdown = AimbotSection:AddDropdown("SilentAimMethods", {
             Title = "Silent Aim Methods",
             Description = "Sets the Silent Aim Methods",
             Values = {
@@ -371,7 +364,7 @@ do
         end)
 
         -- Silent Aim Chance Slider
-        SilentAimSection:AddSlider("SilentAimChance", {
+        AimbotSection:AddSlider("SilentAimChance", {
             Title = "Silent Aim Chance",
             Description = "Changes the Hit Chance for Silent Aim",
             Default = Configuration.SilentAimChance or 100,  -- Ensure a default value
@@ -385,7 +378,6 @@ do
     else
         ShowWarning = true
     end
-
 
 
 
