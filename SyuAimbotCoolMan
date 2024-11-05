@@ -332,8 +332,8 @@ end)
             ShowWarning = true
         end
     
-        -- New tab for Silent Aim
-local SilentAimTab = Window:AddTab({ Title = "Silent Aim", Icon = "target" }) -- Add a new tab for Silent Aim
+-- Silent Aim Tab and Section
+local SilentAimTab = Window:AddTab({ Title = "Silent Aim", Icon = "target" })
 local SilentAimSection = SilentAimTab:AddSection("Silent Aim")
 
 -- Check for existing values before inserting
@@ -342,7 +342,7 @@ if not table.find(AimModeDropdown.Values, "Silent") then
 end
 AimModeDropdown:BuildDropdownList() -- Build the dropdown list once after all necessary values are added
 
--- Add Silent Aim Methods dropdown
+-- Silent Aim Methods Dropdown
 local SilentAimMethodsDropdown = SilentAimSection:AddDropdown("SilentAimMethods", {
     Title = "Silent Aim Methods",
     Description = "Sets the Silent Aim Methods",
@@ -350,7 +350,6 @@ local SilentAimMethodsDropdown = SilentAimSection:AddDropdown("SilentAimMethods"
     Multi = true,
     Default = Configuration.SilentAimMethods or {} -- Ensure it's not nil
 })
-
 SilentAimMethodsDropdown:OnChanged(function(Value)
     Configuration.SilentAimMethods = {}
     for Key, _ in next, Value do
@@ -360,7 +359,7 @@ SilentAimMethodsDropdown:OnChanged(function(Value)
     end
 end)
 
--- Add Silent Aim Chance slider
+-- Silent Aim Chance Slider
 SilentAimSection:AddSlider("SilentAimChance", {
     Title = "Silent Aim Chance",
     Description = "Changes the Hit Chance for Silent Aim",
@@ -373,18 +372,17 @@ SilentAimSection:AddSlider("SilentAimChance", {
     end
 })
 
--- Silent Aim Fov Settings
-local SilentAimFovToggle = SilentAimSection:AddToggle("SilentAimFoVCheck", {
+-- Silent Aim FoV Check Toggle
+local SilentAimFovCheckToggle = SilentAimSection:AddToggle("SilentAimFoVCheck", {
     Title = "Silent Aim FoV Check",
     Description = "Toggles the Field of View Check for Silent Aim",
     Default = Configuration.SilentAimFoVCheck or false
 })
-SilentAimFovToggle:OnChanged(function(Value)
+SilentAimFovCheckToggle:OnChanged(function(Value)
     Configuration.SilentAimFoVCheck = Value
 end)
 
-
--- Toggle for displaying Silent Aim FoV radius
+-- Silent Aim FoV Display Toggle
 local SilentAimFovToggle = SilentAimSection:AddToggle("SilentAimFoV", { 
     Title = "Silent Aim FoV", 
     Description = "Graphically Displays the Silent Aim FoV Radius", 
@@ -433,7 +431,7 @@ SilentAimSection:AddSlider("SilentAimFoVOpacity", {
     end
 })
 
--- Toggle for Silent Aim FoV Fill
+-- Silent Aim FoV Fill Toggle
 local SilentAimFovFilledToggle = SilentAimSection:AddToggle("SilentAimFoVFilled", { 
     Title = "Silent Aim FoV Filled", 
     Description = "Fills the Silent Aim FoV circle", 
@@ -443,7 +441,7 @@ SilentAimFovFilledToggle:OnChanged(function(Value)
     Configuration.SilentAimFoVFilled = Value
 end)
 
--- Color Picker for Silent Aim FoV
+-- Silent Aim FoV Colour Picker
 local SilentAimFovColourPicker = SilentAimSection:AddColorpicker("SilentAimFoVColour", {
     Title = "Silent Aim FoV Colour",
     Description = "Changes the Silent Aim FoV Colour",
