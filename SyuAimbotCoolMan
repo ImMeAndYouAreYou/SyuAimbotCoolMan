@@ -319,7 +319,7 @@ do
     else
         ShowWarning = true
     end
-    if getfenv().hookmetamethod and getfenv().newcclosure and getfenv().checkcaller and getfenv().getnamecallmethod then
+    --if getfenv().hookmetamethod and getfenv().newcclosure and getfenv().checkcaller and getfenv().getnamecallmethod then
         table.insert(AimModeDropdown.Values, "Silent")
         AimModeDropdown:BuildDropdownList()
 
@@ -350,9 +350,9 @@ do
                 Configuration.SilentAimChance = Value
             end
         })
-    else
-        ShowWarning = true
-    end
+    --else
+     --   ShowWarning = true
+    --end
 
     local OffAfterKillToggle = AimbotSection:AddToggle("OffAfterKill", { Title = "Off After Kill", Description = "Disables the Aiming Mode after killing a Target", Default = Configuration.OffAfterKill })
     OffAfterKillToggle:OnChanged(function(Value)
