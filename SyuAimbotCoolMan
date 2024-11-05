@@ -1731,50 +1731,66 @@ local VisualsHandler = {}
 
 function VisualsHandler:Visualize(Object)
     if not DEBUG and Fluent and getfenv().Drawing and typeof(Object) == "string" then
-        if string.lower(Object) == "fov" then
-            local FoV = getfenv().Drawing.new("Circle")
-            FoV.Visible = false
-            FoV.ZIndex = 4
-            FoV.NumSides = 1000
-            FoV.Radius = Configuration.FoVRadius
-            FoV.Thickness = Configuration.FoVThickness
-            FoV.Transparency = Configuration.FoVOpacity
-            FoV.Filled = Configuration.FoVFilled
-            FoV.Color = Configuration.FoVColour
-            return FoV
-        elseif string.lower(Object) == "espbox" then
-            local ESPBox = getfenv().Drawing.new("Square")
-            ESPBox.Visible = false
-            ESPBox.ZIndex = 2
-            ESPBox.Thickness = Configuration.ESPThickness
-            ESPBox.Transparency = Configuration.ESPOpacity
-            ESPBox.Filled = Configuration.ESPBoxFilled
-            ESPBox.Color = Configuration.ESPColour
-            return ESPBox
-        elseif string.lower(Object) == "nameesp" then
+        if string.lower(Object) == "nameesp" then
             local NameESP = getfenv().Drawing.new("Text")
             NameESP.Visible = false
             NameESP.ZIndex = 3
             NameESP.Center = true
             NameESP.Outline = true
-            NameESP.OutlineColor = Configuration.NameESPOutlineColour
-            NameESP.Font = getfenv().Drawing.Font and getfenv().Drawing.Font[Configuration.NameESPFont] or getfenv().Drawing.Fonts and getfenv().Drawing.Fonts[Configuration.NameESPFont]
-            NameESP.Size = Configuration.NameESPSize
-            NameESP.Transparency = Configuration.ESPOpacity
-            NameESP.Color = Configuration.ESPColour
+            NameESP.OutlineColor = Configuration.NameESPOutlineColour or Color3.new(0, 0, 0)  -- Default to black if not set
+            NameESP.Font = getfenv().Drawing.Fonts[Configuration.NameESPFont] or getfenv().Drawing.Fonts[1]  -- Default to first font if invalid
+            NameESP.Size = Configuration.NameESPSize or 12  -- Default to size 12 if not set
+            NameESP.Transparency = Configuration.ESPOpacity or 1  -- Default to fully opaque if not set
+            NameESP.Color = Configuration.ESPColour or Color3.new(1, 1, 1)  -- Default to white if not set
             return NameESP
-        elseif string.lower(Object) == "traceresp" then
-            local TracerESP = getfenv().Drawing.new("Line")
-            TracerESP.Visible = false
-            TracerESP.ZIndex = 1
-            TracerESP.Thickness = Configuration.ESPThickness
-            TracerESP.Transparency = Configuration.ESPOpacity
-            TracerESP.Color = Configuration.ESPColour
-            return TracerESP
+        end
+        if not DEBUG and Fluent and getfenv().Drawing and typeof(Object) == "string" then
+            if string.lower(Object) == "fov" then
+                local FoV = getfenv().Drawing.new("Circle")
+                FoV.Visible = false
+                FoV.ZIndex = 4
+                FoV.NumSides = 1000
+                FoV.Radius = Configuration.FoVRadius
+                FoV.Thickness = Configuration.FoVThickness
+                FoV.Transparency = Configuration.FoVOpacity
+                FoV.Filled = Configuration.FoVFilled
+                FoV.Color = Configuration.FoVColour
+                return FoV
+            elseif string.lower(Object) == "espbox" then
+                local ESPBox = getfenv().Drawing.new("Square")
+                ESPBox.Visible = false
+                ESPBox.ZIndex = 2
+                ESPBox.Thickness = Configuration.ESPThickness
+                ESPBox.Transparency = Configuration.ESPOpacity
+                ESPBox.Filled = Configuration.ESPBoxFilled
+                ESPBox.Color = Configuration.ESPColour
+                return ESPBox
+            elseif string.lower(Object) == "nameesp" then
+                local NameESP = getfenv().Drawing.new("Text")
+                NameESP.Visible = false
+                NameESP.ZIndex = 3
+                NameESP.Center = true
+                NameESP.Outline = true
+                NameESP.OutlineColor = Configuration.NameESPOutlineColour
+                NameESP.Font = getfenv().Drawing.Font and getfenv().Drawing.Font[Configuration.NameESPFont] or getfenv().Drawing.Fonts and getfenv().Drawing.Fonts[Configuration.NameESPFont]
+                NameESP.Size = Configuration.NameESPSize
+                NameESP.Transparency = Configuration.ESPOpacity
+                NameESP.Color = Configuration.ESPColour
+                return NameESP
+            elseif string.lower(Object) == "traceresp" then
+                local TracerESP = getfenv().Drawing.new("Line")
+                TracerESP.Visible = false
+                TracerESP.ZIndex = 1
+                TracerESP.Thickness = Configuration.ESPThickness
+                TracerESP.Transparency = Configuration.ESPOpacity
+                TracerESP.Color = Configuration.ESPColour
+                return TracerESP
+            end
         end
     end
     return nil
 end
+
 
 local Visuals = { FoV = VisualsHandler:Visualize("FoV") }
 
