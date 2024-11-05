@@ -321,40 +321,43 @@ do
     else
         ShowWarning = true
     end
-    local SilentAimSection = Tabs.SilentAim:AddSection("Silent Aim Settings")
+    -- Silent Aim Section
+local SilentAimSection = Tabs.SilentAim:AddSection("Silent Aim Settings")
 
-    if getfenv().hookmetamethod and getfenv().newcclosure and getfenv().checkcaller and getfenv().getnamecallmethod then
-        local SilentAimMethodsDropdown = SilentAimSection:AddDropdown("SilentAimMethods", {
-            Title = "Silent Aim Methods",
-            Description = "Sets the Silent Aim Methods",
-            Values = { "Mouse.Hit / Mouse.Target", "GetMouseLocation", "Raycast", "FindPartOnRay", "FindPartOnRayWithIgnoreList", "FindPartOnRayWithWhitelist" },
-            Multi = true,
-            Default = Configuration.SilentAimMethods
-        })
+if getfenv().hookmetamethod and getfenv().newcclosure and getfenv().checkcaller and getfenv().getnamecallmethod then
+    -- Create the Silent Aim Methods Dropdown
+    local SilentAimMethodsDropdown = SilentAimSection:AddDropdown("SilentAimMethods", {
+        Title = "Silent Aim Methods",
+        Description = "Sets the Silent Aim Methods",
+        Values = { "Mouse.Hit / Mouse.Target", "GetMouseLocation", "Raycast", "FindPartOnRay", "FindPartOnRayWithIgnoreList", "FindPartOnRayWithWhitelist" },
+        Multi = true,
+        Default = Configuration.SilentAimMethods or {},  -- Ensure there's a default value
+    })
 
-        SilentAimMethodsDropdown:OnChanged(function(Value)
-            Configuration.SilentAimMethods = {}
-            for Key, _ in next, Value do
-                if typeof(Key) == "string" then
-                    table.insert(Configuration.SilentAimMethods, Key)
-                end
+    SilentAimMethodsDropdown:OnChanged(function(Value)
+        Configuration.SilentAimMethods = {}
+        for Key, _ in next, Value do
+            if typeof(Key) == "string" then
+                table.insert(Configuration.SilentAimMethods, Key)
             end
-        end)
+        end
+    end)
 
-        SilentAimSection:AddSlider("SilentAimChance", {
-            Title = "Silent Aim Chance",
-            Description = "Changes the Hit Chance for Silent Aim",
-            Default = Configuration.SilentAimChance,
-            Min = 1,
-            Max = 100,
-            Rounding = 1,
-            Callback = function(Value)
-                Configuration.SilentAimChance = Value
-            end
-        })
-    else
-        ShowWarning = true
-    end
+    -- Create the Silent Aim Chance Slider
+    SilentAimSection:AddSlider("SilentAimChance", {
+        Title = "Silent Aim Chance",
+        Description = "Changes the Hit Chance for Silent Aim",
+        Default = Configuration.SilentAimChance or 100,  -- Ensure a default value
+        Min = 1,
+        Max = 100,
+        Rounding = 1,
+        Callback = function(Value)
+            Configuration.SilentAimChance = Value
+        end
+    })
+else
+    ShowWarning = true
+end
 
 
     local OffAfterKillToggle = AimbotSection:AddToggle("OffAfterKill", { Title = "Off After Kill", Description = "Disables the Aiming Mode after killing a Target", Default = Configuration.OffAfterKill })
