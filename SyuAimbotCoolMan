@@ -359,6 +359,7 @@ SilentAimMethodsDropdown:OnChanged(function(Value)
         end
     end
 end)
+local SilentAimFovSection = SilentAimSection:AddSection("Silent Aim FoV")
 
 -- Add Silent Aim Chance slider
 SilentAimSection:AddSlider("SilentAimChance", {
@@ -382,8 +383,7 @@ local SilentAimFovToggle = SilentAimSection:AddToggle("SilentAimFoVCheck", {
 SilentAimFovToggle:OnChanged(function(Value)
     Configuration.SilentAimFoVCheck = Value
 end)
--- Silent Aim FoV Section
-local SilentAimFovSection = SilentAimSection:AddSection("Silent Aim FoV")
+
 
 -- Toggle for displaying Silent Aim FoV radius
 local SilentAimFovToggle = SilentAimFovSection:AddToggle("SilentAimFoV", { 
@@ -453,7 +453,6 @@ local SilentAimFovColourPicker = SilentAimFovSection:AddColorpicker("SilentAimFo
         Configuration.SilentAimFoVColour = Value
     end
 })
-
     local OffAfterKillToggle = AimbotSection:AddToggle("OffAfterKill", { Title = "Off After Kill", Description = "Disables the Aiming Mode after killing a Target", Default = Configuration.OffAfterKill })
     OffAfterKillToggle:OnChanged(function(Value)
         Configuration.OffAfterKill = Value
