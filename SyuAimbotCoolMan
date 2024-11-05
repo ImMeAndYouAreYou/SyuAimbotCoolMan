@@ -478,7 +478,7 @@ local SilentAimFovColourPicker = SilentAimSection:AddColorpicker("SilentAimFoVCo
         Configuration.SilentAimFoVColour = Value
     end
 })
--- Silent Aim FoV Radius Slider
+
 SilentAimSection:AddSlider("SilentAimFoVRadius", {
     Title = "Silent Aim FoV Radius",
     Description = "Adjusts the radius for Silent Aim Field of View",
@@ -490,6 +490,7 @@ SilentAimSection:AddSlider("SilentAimFoVRadius", {
         Configuration.SilentAimFoVRadius = Value
     end
 })
+
 
     local OffAfterKillToggle = AimbotSection:AddToggle("OffAfterKill", { Title = "Off After Kill", Description = "Disables the Aiming Mode after killing a Target", Default = Configuration.OffAfterKill })
     OffAfterKillToggle:OnChanged(function(Value)
