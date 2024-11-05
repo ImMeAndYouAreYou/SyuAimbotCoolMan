@@ -175,12 +175,18 @@ Configuration.PremiumCheck = ImportedConfiguration["PremiumCheck"] or false
 
 Configuration.FoV = ImportedConfiguration["FoV"] or false
 Configuration.FoVKey = ImportedConfiguration["FoVKey"] or "R"
-Configuration.SilentAimFoV = ImportedConfiguration["SilentAimFoV"] or false
-Configuration.SilentAimFoVKey = ImportedConfiguration["SilentAimFoVKey"] or "Y"
 Configuration.FoVThickness = ImportedConfiguration["FoVThickness"] or 2
 Configuration.FoVOpacity = ImportedConfiguration["FoVOpacity"] or 0.8
 Configuration.FoVFilled = ImportedConfiguration["FoVFilled"] or false
 Configuration.FoVColour = ImportedConfiguration["FoVColour"] or Color3.fromRGB(255, 255, 255)
+
+Configuration.SilentAimFoV = ImportedConfiguration["SilentAimFoV"] or false
+Configuration.SilentAimFoVKey = ImportedConfiguration["SilentAimFoVKey"] or "Y"
+Configuration.SilentAimFoVThickness = ImportedConfiguration["SilentAimFoVThickness"] or 2
+Configuration.SilentAimFoVOpacity = ImportedConfiguration["SilentAimFoVOpacity"] or 0.8
+Configuration.SilentAimFoVFilled = ImportedConfiguration["SilentAimFoVFilled"] or false
+Configuration.SilentAimFoVColour = ImportedConfiguration["SilentAimFoVColour"] or Color3.fromRGB(255, 255, 255)
+
 
 Configuration.SmartESP = ImportedConfiguration["SmartESP"] or false
 Configuration.ESPKey = ImportedConfiguration["ESPKey"] or "T"
@@ -376,21 +382,24 @@ local SilentAimFovToggle = SilentAimSection:AddToggle("SilentAimFoVCheck", {
 SilentAimFovToggle:OnChanged(function(Value)
     Configuration.SilentAimFoVCheck = Value
 end)
+-- Silent Aim FoV Section
+local SilentAimFovSection = SilentAimSection:AddSection("Silent Aim FoV")
 
-local SilentAimFovToggle = SilentAimSection:AddToggle("SilentAimFoV", {
-    Title = "Silent Aim FoV",
-    Description = "Graphically displays the FoV Radius for Silent Aim",
-    Default = Configuration.SilentAimFoV or false
+-- Toggle for displaying Silent Aim FoV radius
+local SilentAimFovToggle = SilentAimFovSection:AddToggle("SilentAimFoV", { 
+    Title = "Silent Aim FoV", 
+    Description = "Graphically Displays the Silent Aim FoV Radius", 
+    Default = Configuration.SilentAimFoV 
 })
 SilentAimFovToggle:OnChanged(function(Value)
     Configuration.SilentAimFoV = Value
 end)
 
--- FoV keybind for Silent Aim (only for computer users)
+-- Keybind for Silent Aim FoV toggle (only for computer users)
 if IsComputer then
-    local SilentAimFovKeybind = SilentAimSection:AddKeybind("SilentAimFoVKey", {
+    local SilentAimFovKeybind = SilentAimFovSection:AddKeybind("SilentAimFoVKey", {
         Title = "Silent Aim FoV Key",
-        Description = "Sets the key to toggle the Silent Aim FoV",
+        Description = "Changes the Silent Aim FoV Key",
         Default = Configuration.SilentAimFoVKey,
         ChangedCallback = function(Value)
             Configuration.SilentAimFoVKey = Value
@@ -399,16 +408,49 @@ if IsComputer then
     Configuration.SilentAimFoVKey = pcall(UserInputService.GetStringForKeyCode, UserInputService, SilentAimFovKeybind.Value) and Enum.KeyCode[SilentAimFovKeybind.Value] or Enum.UserInputType.MouseButton2
 end
 
--- Silent Aim FoV Radius Slider
-SilentAimSection:AddSlider("SilentAimFoVRadius", {
-    Title = "Silent Aim FoV Radius",
-    Description = "Adjusts the radius for Silent Aim Field of View",
-    Default = Configuration.SilentAimFoVRadius or 100, -- Default to 100 if not set
-    Min = 10,
-    Max = 1000,
+-- Silent Aim FoV Thickness Slider
+SilentAimFovSection:AddSlider("SilentAimFoVThickness", {
+    Title = "Silent Aim FoV Thickness",
+    Description = "Changes the Silent Aim FoV Thickness",
+    Default = Configuration.SilentAimFoVThickness or 1,
+    Min = 1,
+    Max = 10,
     Rounding = 1,
     Callback = function(Value)
-        Configuration.SilentAimFoVRadius = Value
+        Configuration.SilentAimFoVThickness = Value
+    end
+})
+
+-- Silent Aim FoV Opacity Slider
+SilentAimFovSection:AddSlider("SilentAimFoVOpacity", {
+    Title = "Silent Aim FoV Opacity",
+    Description = "Changes the Silent Aim FoV Opacity",
+    Default = Configuration.SilentAimFoVOpacity or 0.5,
+    Min = 0.1,
+    Max = 1,
+    Rounding = 1,
+    Callback = function(Value)
+        Configuration.SilentAimFoVOpacity = Value
+    end
+})
+
+-- Toggle for Silent Aim FoV Fill
+local SilentAimFovFilledToggle = SilentAimFovSection:AddToggle("SilentAimFoVFilled", { 
+    Title = "Silent Aim FoV Filled", 
+    Description = "Fills the Silent Aim FoV circle", 
+    Default = Configuration.SilentAimFoVFilled 
+})
+SilentAimFovFilledToggle:OnChanged(function(Value)
+    Configuration.SilentAimFoVFilled = Value
+end)
+
+-- Color Picker for Silent Aim FoV
+local SilentAimFovColourPicker = SilentAimFovSection:AddColorpicker("SilentAimFoVColour", {
+    Title = "Silent Aim FoV Colour",
+    Description = "Changes the Silent Aim FoV Colour",
+    Default = Configuration.SilentAimFoVColour or Color3.fromRGB(255, 255, 255), -- Default to white if not set
+    Callback = function(Value)
+        Configuration.SilentAimFoVColour = Value
     end
 })
 
