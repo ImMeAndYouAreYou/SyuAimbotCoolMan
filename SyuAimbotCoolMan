@@ -359,7 +359,6 @@ SilentAimMethodsDropdown:OnChanged(function(Value)
         end
     end
 end)
-local SilentAimFovSection = SilentAimSection:AddSection("Silent Aim FoV")
 
 -- Add Silent Aim Chance slider
 SilentAimSection:AddSlider("SilentAimChance", {
@@ -386,7 +385,7 @@ end)
 
 
 -- Toggle for displaying Silent Aim FoV radius
-local SilentAimFovToggle = SilentAimFovSection:AddToggle("SilentAimFoV", { 
+local SilentAimFovToggle = SilentAimSection:AddToggle("SilentAimFoV", { 
     Title = "Silent Aim FoV", 
     Description = "Graphically Displays the Silent Aim FoV Radius", 
     Default = Configuration.SilentAimFoV 
@@ -397,7 +396,7 @@ end)
 
 -- Keybind for Silent Aim FoV toggle (only for computer users)
 if IsComputer then
-    local SilentAimFovKeybind = SilentAimFovSection:AddKeybind("SilentAimFoVKey", {
+    local SilentAimFovKeybind = SilentAimSection:AddKeybind("SilentAimFoVKey", {
         Title = "Silent Aim FoV Key",
         Description = "Changes the Silent Aim FoV Key",
         Default = Configuration.SilentAimFoVKey,
@@ -409,7 +408,7 @@ if IsComputer then
 end
 
 -- Silent Aim FoV Thickness Slider
-SilentAimFovSection:AddSlider("SilentAimFoVThickness", {
+SilentAimSection:AddSlider("SilentAimFoVThickness", {
     Title = "Silent Aim FoV Thickness",
     Description = "Changes the Silent Aim FoV Thickness",
     Default = Configuration.SilentAimFoVThickness or 1,
@@ -422,7 +421,7 @@ SilentAimFovSection:AddSlider("SilentAimFoVThickness", {
 })
 
 -- Silent Aim FoV Opacity Slider
-SilentAimFovSection:AddSlider("SilentAimFoVOpacity", {
+SilentAimSection:AddSlider("SilentAimFoVOpacity", {
     Title = "Silent Aim FoV Opacity",
     Description = "Changes the Silent Aim FoV Opacity",
     Default = Configuration.SilentAimFoVOpacity or 0.5,
@@ -435,7 +434,7 @@ SilentAimFovSection:AddSlider("SilentAimFoVOpacity", {
 })
 
 -- Toggle for Silent Aim FoV Fill
-local SilentAimFovFilledToggle = SilentAimFovSection:AddToggle("SilentAimFoVFilled", { 
+local SilentAimFovFilledToggle = SilentAimSection:AddToggle("SilentAimFoVFilled", { 
     Title = "Silent Aim FoV Filled", 
     Description = "Fills the Silent Aim FoV circle", 
     Default = Configuration.SilentAimFoVFilled 
@@ -445,7 +444,7 @@ SilentAimFovFilledToggle:OnChanged(function(Value)
 end)
 
 -- Color Picker for Silent Aim FoV
-local SilentAimFovColourPicker = SilentAimFovSection:AddColorpicker("SilentAimFoVColour", {
+local SilentAimFovColourPicker = SilentAimSection:AddColorpicker("SilentAimFoVColour", {
     Title = "Silent Aim FoV Colour",
     Description = "Changes the Silent Aim FoV Colour",
     Default = Configuration.SilentAimFoVColour or Color3.fromRGB(255, 255, 255), -- Default to white if not set
@@ -453,6 +452,7 @@ local SilentAimFovColourPicker = SilentAimFovSection:AddColorpicker("SilentAimFo
         Configuration.SilentAimFoVColour = Value
     end
 })
+
     local OffAfterKillToggle = AimbotSection:AddToggle("OffAfterKill", { Title = "Off After Kill", Description = "Disables the Aiming Mode after killing a Target", Default = Configuration.OffAfterKill })
     OffAfterKillToggle:OnChanged(function(Value)
         Configuration.OffAfterKill = Value
