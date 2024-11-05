@@ -175,6 +175,8 @@ Configuration.PremiumCheck = ImportedConfiguration["PremiumCheck"] or false
 
 Configuration.FoV = ImportedConfiguration["FoV"] or false
 Configuration.FoVKey = ImportedConfiguration["FoVKey"] or "R"
+Configuration.SilentAimFoV = ImportedConfiguration["SilentAimFoV"] or false
+Configuration.SilentAimFoVKey = ImportedConfiguration["SilentAimFoVKey"] or "Y"
 Configuration.FoVThickness = ImportedConfiguration["FoVThickness"] or 2
 Configuration.FoVOpacity = ImportedConfiguration["FoVOpacity"] or 0.8
 Configuration.FoVFilled = ImportedConfiguration["FoVFilled"] or false
@@ -375,10 +377,33 @@ SilentAimFovToggle:OnChanged(function(Value)
     Configuration.SilentAimFoVCheck = Value
 end)
 
+local SilentAimFovToggle = SilentAimSection:AddToggle("SilentAimFoV", {
+    Title = "Silent Aim FoV",
+    Description = "Graphically displays the FoV Radius for Silent Aim",
+    Default = Configuration.SilentAimFoV or false
+})
+SilentAimFovToggle:OnChanged(function(Value)
+    Configuration.SilentAimFoV = Value
+end)
+
+-- FoV keybind for Silent Aim (only for computer users)
+if IsComputer then
+    local SilentAimFovKeybind = SilentAimSection:AddKeybind("SilentAimFoVKey", {
+        Title = "Silent Aim FoV Key",
+        Description = "Sets the key to toggle the Silent Aim FoV",
+        Default = Configuration.SilentAimFoVKey,
+        ChangedCallback = function(Value)
+            Configuration.SilentAimFoVKey = Value
+        end
+    })
+    Configuration.SilentAimFoVKey = pcall(UserInputService.GetStringForKeyCode, UserInputService, SilentAimFovKeybind.Value) and Enum.KeyCode[SilentAimFovKeybind.Value] or Enum.UserInputType.MouseButton2
+end
+
+-- Silent Aim FoV Radius Slider
 SilentAimSection:AddSlider("SilentAimFoVRadius", {
     Title = "Silent Aim FoV Radius",
-    Description = "Changes the Field of View Radius for Silent Aim",
-    Default = Configuration.SilentAimFoVRadius or 100, -- Default to 100 if not defined
+    Description = "Adjusts the radius for Silent Aim Field of View",
+    Default = Configuration.SilentAimFoVRadius or 100, -- Default to 100 if not set
     Min = 10,
     Max = 1000,
     Rounding = 1,
