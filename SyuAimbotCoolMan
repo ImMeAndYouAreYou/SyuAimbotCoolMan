@@ -181,7 +181,7 @@ Configuration.FoVFilled = ImportedConfiguration["FoVFilled"] or false
 Configuration.FoVColour = ImportedConfiguration["FoVColour"] or Color3.fromRGB(255, 255, 255)
 
 Configuration.SilentAimFoV = ImportedConfiguration["SilentAimFoV"] or false
-Configuration.SilentAimFoVKey = ImportedConfiguration["SilentAimFoVKey"] or "."
+Configuration.SilentAimFoVKey = ImportedConfiguration["SilentAimFoVKey"] or "Y"
 Configuration.SilentAimFoVThickness = ImportedConfiguration["SilentAimFoVThickness"] or 2
 Configuration.SilentAimFoVOpacity = ImportedConfiguration["SilentAimFoVOpacity"] or 0.8
 Configuration.SilentAimFoVFilled = ImportedConfiguration["SilentAimFoVFilled"] or false
@@ -332,6 +332,34 @@ end)
             ShowWarning = true
         end
     
+        -- New tab for Silent Aim
+local SilentAimTab = Window:AddTab({ Title = "Silent Aim", Icon = "target" }) -- Add a new tab for Silent Aim
+local SilentAimSection = SilentAimTab:AddSection("Silent Aim")
+
+-- Check for existing values before inserting
+if not table.find(AimModeDropdown.Values, "Silent") then
+    table.insert(AimModeDropdown.Values, "Silent")
+end
+AimModeDropdown:BuildDropdownList() -- Build the dropdown list once after all necessary values are added
+
+-- Add Silent Aim Methods dropdown
+local SilentAimMethodsDropdown = SilentAimSection:AddDropdown("SilentAimMethods", {
+    Title = "Silent Aim Methods",
+    Description = "Sets the Silent Aim Methods",
+    Values = { "Mouse.Hit / Mouse.Target", "GetMouseLocation", "Raycast", "FindPartOnRay", "FindPartOnRayWithIgnoreList", "FindPartOnRayWithWhitelist" },
+    Multi = true,
+    Default = Configuration.SilentAimMethods or {} -- Ensure it's not nil
+})
+
+SilentAimMethodsDropdown:OnChanged(function(Value)
+    Configuration.SilentAimMethods = {}
+    for Key, _ in next, Value do
+        if typeof(Key) == "string" then
+            table.insert(Configuration.SilentAimMethods, Key)
+        end
+    end
+end)
+
 -- Silent Aim Tab and Section
 local SilentAimTab = Window:AddTab({ Title = "Silent Aim", Icon = "target" })
 local SilentAimSection = SilentAimTab:AddSection("Silent Aim")
@@ -448,6 +476,18 @@ local SilentAimFovColourPicker = SilentAimSection:AddColorpicker("SilentAimFoVCo
     Default = Configuration.SilentAimFoVColour or Color3.fromRGB(255, 255, 255), -- Default to white if not set
     Callback = function(Value)
         Configuration.SilentAimFoVColour = Value
+    end
+})
+-- Silent Aim FoV Radius Slider
+SilentAimSection:AddSlider("SilentAimFoVRadius", {
+    Title = "Silent Aim FoV Radius",
+    Description = "Adjusts the radius for Silent Aim Field of View",
+    Default = Configuration.SilentAimFoVRadius or 100, -- Default to 100 if not set
+    Min = 10,
+    Max = 1000,
+    Rounding = 1,
+    Callback = function(Value)
+        Configuration.SilentAimFoVRadius = Value
     end
 })
 
