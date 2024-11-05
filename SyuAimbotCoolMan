@@ -150,8 +150,6 @@ Configuration.WallCheck = ImportedConfiguration["WallCheck"] or false
 Configuration.WaterCheck = ImportedConfiguration["WaterCheck"] or false
 
 Configuration.FoVCheck = ImportedConfiguration["FoVCheck"] or false
-Configuration.SilentAimFoVCheck = ImportedConfiguration["SilentAimFoVCheck"] or false
-Configuration.SilentAimFoVRadius = ImportedConfiguration["SilentAimFoVRadius"] or 100
 Configuration.FoVRadius = ImportedConfiguration["FoVRadius"] or 100
 Configuration.MagnitudeCheck = ImportedConfiguration["MagnitudeCheck"] or false
 Configuration.TriggerMagnitude = ImportedConfiguration["TriggerMagnitude"] or 500
@@ -179,14 +177,6 @@ Configuration.FoVThickness = ImportedConfiguration["FoVThickness"] or 2
 Configuration.FoVOpacity = ImportedConfiguration["FoVOpacity"] or 0.8
 Configuration.FoVFilled = ImportedConfiguration["FoVFilled"] or false
 Configuration.FoVColour = ImportedConfiguration["FoVColour"] or Color3.fromRGB(255, 255, 255)
-
-Configuration.SilentAimFoV = ImportedConfiguration["SilentAimFoV"] or false
-Configuration.SilentAimFoVKey = ImportedConfiguration["SilentAimFoVKey"] or "Y"
-Configuration.SilentAimFoVThickness = ImportedConfiguration["SilentAimFoVThickness"] or 2
-Configuration.SilentAimFoVOpacity = ImportedConfiguration["SilentAimFoVOpacity"] or 0.8
-Configuration.SilentAimFoVFilled = ImportedConfiguration["SilentAimFoVFilled"] or false
-Configuration.SilentAimFoVColour = ImportedConfiguration["SilentAimFoVColour"] or Color3.fromRGB(255, 255, 255)
-
 
 Configuration.SmartESP = ImportedConfiguration["SmartESP"] or false
 Configuration.ESPKey = ImportedConfiguration["ESPKey"] or "T"
@@ -272,225 +262,97 @@ end)
 
 
 --! UI Initializer
-    do
-        local Window = Fluent:CreateWindow({
-            Title = "Syu Aimbot",
-            SubTitle = "By: Saints0tsdn (@Syu0yczs)",
-            TabWidth = UISettings.TabWidth,
-            Size = UDim2.fromOffset(table.unpack(UISettings.Size)),
-            Theme = UISettings.Theme,
-            Acrylic = UISettings.Acrylic,
-            MinimizeKey = UISettings.MinimizeKey
-        })
-    
-        local Tabs = { Aimbot = Window:AddTab({ Title = "Aimbot", Icon = "crosshair" }) }
-    
-        Window:SelectTab(1)
-        local AimbotSection = Tabs.Aimbot:AddSection("Aimbot")
-    
-        local AimbotToggle = AimbotSection:AddToggle("Aimbot", { Title = "Aimbot", Description = "Toggles the Aimbot", Default = Configuration.Aimbot })
-        AimbotToggle:OnChanged(function(Value)
-            Configuration.Aimbot = Value
-            if not IsComputer then
-                Aiming = Value
-            end
+
+do
+    local Window = Fluent:CreateWindow({
+        Title = "Syu Aimbot",
+        SubTitle = "By: Saints0tsdn (@Syu0yczs)",
+        TabWidth = UISettings.TabWidth,
+        Size = UDim2.fromOffset(table.unpack(UISettings.Size)),
+        Theme = UISettings.Theme,
+        Acrylic = UISettings.Acrylic,
+        MinimizeKey = UISettings.MinimizeKey
+    })
+
+    local Tabs = { Aimbot = Window:AddTab({ Title = "Aimbot", Icon = "crosshair" }) }
+
+    Window:SelectTab(1)
+    local AimbotSection = Tabs.Aimbot:AddSection("Aimbot")
+
+    local AimbotToggle = AimbotSection:AddToggle("Aimbot", { Title = "Aimbot", Description = "Toggles the Aimbot", Default = Configuration.Aimbot })
+    AimbotToggle:OnChanged(function(Value)
+        Configuration.Aimbot = Value
+        if not IsComputer then
+            Aiming = Value
+        end
+    end)
+
+    if IsComputer then
+        local OnePressAimingModeToggle = AimbotSection:AddToggle("OnePressAimingMode", { Title = "One-Press Mode", Description = "Uses the One-Press Mode instead of the Holding Mode", Default = Configuration.OnePressAimingMode })
+        OnePressAimingModeToggle:OnChanged(function(Value)
+            Configuration.OnePressAimingMode = Value
         end)
-    
-        if IsComputer then
-            local OnePressAimingModeToggle = AimbotSection:AddToggle("OnePressAimingMode", { Title = "One-Press Mode", Description = "Uses the One-Press Mode instead of the Holding Mode", Default = Configuration.OnePressAimingMode })
-            OnePressAimingModeToggle:OnChanged(function(Value)
-                Configuration.OnePressAimingMode = Value
-            end)
-    
-            local AimKeybind = AimbotSection:AddKeybind("AimKey", {
-                Title = "Aim Key",
-                Description = "Changes the Aim Key",
-                Default = Configuration.AimKey,
-                ChangedCallback = function(Value)
-                    Configuration.AimKey = Value
-                end
-            })
-            Configuration.AimKey = pcall(UserInputService.GetStringForKeyCode, UserInputService, AimKeybind.Value) and Enum.KeyCode[AimKeybind.Value] or Enum.UserInputType.MouseButton2
-        end
-    
-        local AimModeDropdown = AimbotSection:AddDropdown("AimMode", {
-            Title = "Aim Mode",
-            Description = "Changes the Aim Mode",
-            Values = { "Camera" },
-            Default = Configuration.AimMode,
-            Callback = function(Value)
-                Configuration.AimMode = Value
+
+        local AimKeybind = AimbotSection:AddKeybind("AimKey", {
+            Title = "Aim Key",
+            Description = "Changes the Aim Key",
+            Default = Configuration.AimKey,
+            ChangedCallback = function(Value)
+                Configuration.AimKey = Value
             end
         })
-    
-        if getfenv().mousemoverel and IsComputer then
-            -- Check for existing values before inserting
-            if not table.find(AimModeDropdown.Values, "Mouse") then
-                table.insert(AimModeDropdown.Values, "Mouse")
-            end
-        else
-            ShowWarning = true
-        end
-    
-        -- New tab for Silent Aim
-local SilentAimTab = Window:AddTab({ Title = "Silent Aim", Icon = "target" }) -- Add a new tab for Silent Aim
-local SilentAimSection = SilentAimTab:AddSection("Silent Aim")
-
--- Check for existing values before inserting
-if not table.find(AimModeDropdown.Values, "Silent") then
-    table.insert(AimModeDropdown.Values, "Silent")
-end
-AimModeDropdown:BuildDropdownList() -- Build the dropdown list once after all necessary values are added
-
--- Add Silent Aim Methods dropdown
-local SilentAimMethodsDropdown = SilentAimSection:AddDropdown("SilentAimMethods", {
-    Title = "Silent Aim Methods",
-    Description = "Sets the Silent Aim Methods",
-    Values = { "Mouse.Hit / Mouse.Target", "GetMouseLocation", "Raycast", "FindPartOnRay", "FindPartOnRayWithIgnoreList", "FindPartOnRayWithWhitelist" },
-    Multi = true,
-    Default = Configuration.SilentAimMethods or {} -- Ensure it's not nil
-})
-
-SilentAimMethodsDropdown:OnChanged(function(Value)
-    Configuration.SilentAimMethods = {}
-    for Key, _ in next, Value do
-        if typeof(Key) == "string" then
-            table.insert(Configuration.SilentAimMethods, Key)
-        end
+        Configuration.AimKey = pcall(UserInputService.GetStringForKeyCode, UserInputService, AimKeybind.Value) and Enum.KeyCode[AimKeybind.Value] or Enum.UserInputType.MouseButton2
     end
-end)
 
--- Add Silent Aim options to the Aimbot Tab
-local SilentAimSection = Tabs.Aimbot:AddSection("Silent Aim")
-
--- Check for existing values before inserting "Silent" into AimModeDropdown
-if not table.find(AimModeDropdown.Values, "Silent") then
-    table.insert(AimModeDropdown.Values, "Silent")
-end
-AimModeDropdown:BuildDropdownList() -- Build the dropdown list once after all necessary values are added
-
--- Silent Aim Methods Dropdown
-local SilentAimMethodsDropdown = SilentAimSection:AddDropdown("SilentAimMethods", {
-    Title = "Silent Aim Methods",
-    Description = "Sets the Silent Aim Methods",
-    Values = { "Mouse.Hit / Mouse.Target", "GetMouseLocation", "Raycast", "FindPartOnRay", "FindPartOnRayWithIgnoreList", "FindPartOnRayWithWhitelist" },
-    Multi = true,
-    Default = Configuration.SilentAimMethods or {} -- Ensure it's not nil
-})
-SilentAimMethodsDropdown:OnChanged(function(Value)
-    Configuration.SilentAimMethods = {}
-    for Key, _ in next, Value do
-        if typeof(Key) == "string" then
-            table.insert(Configuration.SilentAimMethods, Key)
-        end
-    end
-end)
-
--- Silent Aim Chance Slider
-SilentAimSection:AddSlider("SilentAimChance", {
-    Title = "Silent Aim Chance",
-    Description = "Changes the Hit Chance for Silent Aim",
-    Default = Configuration.SilentAimChance or 50, -- Default to 50 if not defined
-    Min = 1,
-    Max = 100,
-    Rounding = 1,
-    Callback = function(Value)
-        Configuration.SilentAimChance = Value
-    end
-})
-
--- Silent Aim FoV Check Toggle
-local SilentAimFovCheckToggle = SilentAimSection:AddToggle("SilentAimFoVCheck", {
-    Title = "Silent Aim FoV Check",
-    Description = "Toggles the Field of View Check for Silent Aim",
-    Default = Configuration.SilentAimFoVCheck or false
-})
-SilentAimFovCheckToggle:OnChanged(function(Value)
-    Configuration.SilentAimFoVCheck = Value
-end)
-
--- Silent Aim FoV Display Toggle
-local SilentAimFovToggle = SilentAimSection:AddToggle("SilentAimFoV", { 
-    Title = "Silent Aim FoV", 
-    Description = "Graphically Displays the Silent Aim FoV Radius", 
-    Default = Configuration.SilentAimFoV 
-})
-SilentAimFovToggle:OnChanged(function(Value)
-    Configuration.SilentAimFoV = Value
-end)
-
--- Keybind for Silent Aim FoV toggle (only for computer users)
-if IsComputer then
-    local SilentAimFovKeybind = SilentAimSection:AddKeybind("SilentAimFoVKey", {
-        Title = "Silent Aim FoV Key",
-        Description = "Changes the Silent Aim FoV Key",
-        Default = Configuration.SilentAimFoVKey,
-        ChangedCallback = function(Value)
-            Configuration.SilentAimFoVKey = Value
+    local AimModeDropdown = AimbotSection:AddDropdown("AimMode", {
+        Title = "Aim Mode",
+        Description = "Changes the Aim Mode",
+        Values = { "Camera" },
+        Default = Configuration.AimMode,
+        Callback = function(Value)
+            Configuration.AimMode = Value
         end
     })
-    Configuration.SilentAimFoVKey = pcall(UserInputService.GetStringForKeyCode, UserInputService, SilentAimFovKeybind.Value) and Enum.KeyCode[SilentAimFovKeybind.Value] or Enum.UserInputType.MouseButton2
-end
-
--- Silent Aim FoV Radius Slider
-SilentAimSection:AddSlider("SilentAimFoVRadius", {
-    Title = "Silent Aim FoV Radius",
-    Description = "Adjusts the radius for Silent Aim Field of View",
-    Default = Configuration.SilentAimFoVRadius or 100, -- Default to 100 if not set
-    Min = 10,
-    Max = 1000,
-    Rounding = 1,
-    Callback = function(Value)
-        Configuration.SilentAimFoVRadius = Value
+    if getfenv().mousemoverel and IsComputer then
+        table.insert(AimModeDropdown.Values, "Mouse")
+        AimModeDropdown:BuildDropdownList()
+    else
+        ShowWarning = true
     end
-})
+    if getfenv().hookmetamethod and getfenv().newcclosure and getfenv().checkcaller and getfenv().getnamecallmethod then
+        table.insert(AimModeDropdown.Values, "Silent")
+        AimModeDropdown:BuildDropdownList()
 
--- Silent Aim FoV Thickness Slider
-SilentAimSection:AddSlider("SilentAimFoVThickness", {
-    Title = "Silent Aim FoV Thickness",
-    Description = "Changes the Silent Aim FoV Thickness",
-    Default = Configuration.SilentAimFoVThickness or 1,
-    Min = 1,
-    Max = 10,
-    Rounding = 1,
-    Callback = function(Value)
-        Configuration.SilentAimFoVThickness = Value
+        local SilentAimMethodsDropdown = AimbotSection:AddDropdown("SilentAimMethods", {
+            Title = "Silent Aim Methods",
+            Description = "Sets the Silent Aim Methods",
+            Values = { "Mouse.Hit / Mouse.Target", "GetMouseLocation", "Raycast", "FindPartOnRay", "FindPartOnRayWithIgnoreList", "FindPartOnRayWithWhitelist" },
+            Multi = true,
+            Default = Configuration.SilentAimMethods
+        })
+        SilentAimMethodsDropdown:OnChanged(function(Value)
+            Configuration.SilentAimMethods = {}
+            for Key, _ in next, Value do
+                if typeof(Key) == "string" then
+                    table.insert(Configuration.SilentAimMethods, Key)
+                end
+            end
+        end)
+
+        AimbotSection:AddSlider("SilentAimChance", {
+            Title = "Silent Aim Chance",
+            Description = "Changes the Hit Chance for Silent Aim",
+            Default = Configuration.SilentAimChance,
+            Min = 1,
+            Max = 100,
+            Rounding = 1,
+            Callback = function(Value)
+                Configuration.SilentAimChance = Value
+            end
+        })
+    else
+        ShowWarning = true
     end
-})
-
--- Silent Aim FoV Opacity Slider
-SilentAimSection:AddSlider("SilentAimFoVOpacity", {
-    Title = "Silent Aim FoV Opacity",
-    Description = "Changes the Silent Aim FoV Opacity",
-    Default = Configuration.SilentAimFoVOpacity or 0.5,
-    Min = 0.1,
-    Max = 1,
-    Rounding = 1,
-    Callback = function(Value)
-        Configuration.SilentAimFoVOpacity = Value
-    end
-})
-
--- Silent Aim FoV Fill Toggle
-local SilentAimFovFilledToggle = SilentAimSection:AddToggle("SilentAimFoVFilled", { 
-    Title = "Silent Aim FoV Filled", 
-    Description = "Fills the Silent Aim FoV circle", 
-    Default = Configuration.SilentAimFoVFilled 
-})
-SilentAimFovFilledToggle:OnChanged(function(Value)
-    Configuration.SilentAimFoVFilled = Value
-end)
-
--- Silent Aim FoV Colour Picker
-local SilentAimFovColourPicker = SilentAimSection:AddColorpicker("SilentAimFoVColour", {
-    Title = "Silent Aim FoV Colour",
-    Description = "Changes the Silent Aim FoV Colour",
-    Default = Configuration.SilentAimFoVColour or Color3.fromRGB(255, 255, 255), -- Default to white if not set
-    Callback = function(Value)
-        Configuration.SilentAimFoVColour = Value
-    end
-})
-
 
     local OffAfterKillToggle = AimbotSection:AddToggle("OffAfterKill", { Title = "Off After Kill", Description = "Disables the Aiming Mode after killing a Target", Default = Configuration.OffAfterKill })
     OffAfterKillToggle:OnChanged(function(Value)
