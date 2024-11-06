@@ -275,9 +275,14 @@ do
         MinimizeKey = UISettings.MinimizeKey
     })
 
-    local Tabs = { Aimbot = Window:AddTab({ Title = "Aimbot", Icon = "crosshair" }) }
-
+    -- Existing Aimbot Tab Setup
+    local Tabs = { 
+        Aimbot = Window:AddTab({ Title = "Aimbot", Icon = "crosshair" }),
+        Client = Window:AddTab({ Title = "Player Client", Icon = "person" }) -- New Player Client Tab
+    }
     Window:SelectTab(1)
+
+    -- Existing Aimbot Section
     local AimbotSection = Tabs.Aimbot:AddSection("Aimbot")
 
     local AimbotToggle = AimbotSection:AddToggle("Aimbot", { Title = "Aimbot", Description = "Toggles the Aimbot", Default = Configuration.Aimbot })
@@ -321,7 +326,8 @@ do
     else
         ShowWarning = true
     end
-   --[[    if getfenv().hookmetamethod and getfenv().newcclosure and getfenv().checkcaller and getfenv().getnamecallmethod then
+
+    if getfenv().hookmetamethod and getfenv().newcclosure and getfenv().checkcaller and getfenv().getnamecallmethod then
         table.insert(AimModeDropdown.Values, "Silent")
         AimModeDropdown:BuildDropdownList()
 
@@ -356,7 +362,90 @@ do
         ShowWarning = true
     end
 
-]]
+    -- Player Client Tab - Movement Settings
+    local MovementSection = Tabs.Client:AddSection("Player Movement")
+
+    -- Walk Speed Slider
+    MovementSection:AddSlider("WalkSpeed", {
+        Title = "Walk Speed",
+        Description = "Adjusts the player's walk speed",
+        Default = 16, -- Default Roblox walk speed
+        Min = 0,
+        Max = 100,
+        Rounding = 1,
+        Callback = function(Value)
+            local player = game.Players.LocalPlayer
+            if player and player.Character and player.Character:FindFirstChild("Humanoid") then
+                player.Character.Humanoid.WalkSpeed = Value
+            end
+        end
+    })
+
+    -- Jump Power Slider
+    MovementSection:AddSlider("JumpPower", {
+        Title = "Jump Power",
+        Description = "Adjusts the player's jump power",
+        Default = 50, -- Default Roblox jump power
+        Min = 0,
+        Max = 200,
+        Rounding = 1,
+        Callback = function(Value)
+            local player = game.Players.LocalPlayer
+            if player and player.Character and player.Character:FindFirstChild("Humanoid") then
+                player.Character.Humanoid.JumpPower = Value
+            end
+        end
+    })
+
+    -- Player Client Tab - Teleportation Settings
+    local TeleportSection = Tabs.Client:AddSection("Teleportation")
+
+    -- Dropdown for selecting Player Target
+    local PlayerTargetDropdown = TeleportSection:AddDropdown("PlayerTarget", {
+        Title = "Player Target",
+        Description = "Select a player to teleport to",
+        Values = {},
+        Default = "",
+        Callback = function(Value)
+            Configuration.PlayerTarget = Value
+        end
+    })
+
+    -- Populate the dropdown with player names
+    for _, player in pairs(game.Players:GetPlayers()) do
+        table.insert(PlayerTargetDropdown.Values, player.Name)
+    end
+    PlayerTargetDropdown:BuildDropdownList()
+
+    -- Teleport Button to teleport to selected Player Target
+    TeleportSection:AddButton("Teleport", {
+        Title = "Teleport to Target",
+        Description = "Teleports you to the selected Player Target",
+        Callback = function()
+            local targetPlayer = game.Players:FindFirstChild(Configuration.PlayerTarget)
+            local localPlayer = game.Players.LocalPlayer
+            if targetPlayer and localPlayer and targetPlayer.Character and targetPlayer.Character:FindFirstChild("HumanoidRootPart") then
+                localPlayer.Character:MoveTo(targetPlayer.Character.HumanoidRootPart.Position)
+            end
+        end
+    })
+
+    -- Refresh Player List Button to update dropdown
+    TeleportSection:AddButton("Refresh Player List", {
+        Title = "Refresh Player List",
+        Description = "Refreshes the Player Target dropdown",
+        Callback = function()
+            PlayerTargetDropdown.Values = {}
+            for _, player in pairs(game.Players:GetPlayers()) do
+                table.insert(PlayerTargetDropdown.Values, player.Name)
+            end
+            PlayerTargetDropdown:BuildDropdownList()
+        end
+    })
+
+    -- Select the Aimbot tab to display it initially
+    Window:SelectTab(1)
+end
 
     local OffAfterKillToggle = AimbotSection:AddToggle("OffAfterKill", { Title = "Off After Kill", Description = "Disables the Aiming Mode after killing a Target", Default = Configuration.OffAfterKill })
     OffAfterKillToggle:OnChanged(function(Value)
