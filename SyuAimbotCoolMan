@@ -439,9 +439,6 @@ do
       end
   })
 
-  -- Select the Client tab to display it initially
-  Window:SelectTab(1)
-
     local OffAfterKillToggle = AimbotSection:AddToggle("OffAfterKill", { Title = "Off After Kill", Description = "Disables the Aiming Mode after killing a Target", Default = Configuration.OffAfterKill })
     OffAfterKillToggle:OnChanged(function(Value)
         Configuration.OffAfterKill = Value
