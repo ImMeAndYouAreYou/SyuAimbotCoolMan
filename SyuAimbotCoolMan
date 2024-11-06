@@ -548,95 +548,6 @@ do
         ShowWarning = true
     end
 
-    if IsComputer then
-         -- Player Client Tab and Sections
-  local ClientTab = Window:AddTab({ Title = "Player Client", Icon = "person" })
-
-  -- Movement Section for Walk Speed and Jump Power
-  local MovementSection = ClientTab:AddSection("Player Movement")
-
-  -- Walk Speed Slider
-  MovementSection:AddSlider("WalkSpeed", {
-      Title = "Walk Speed",
-      Description = "Adjusts the player's walk speed",
-      Default = 16, -- Default Roblox walk speed
-      Min = 0,
-      Max = 100,
-      Rounding = 1,
-      Callback = function(Value)
-          local player = game.Players.LocalPlayer
-          if player and player.Character and player.Character:FindFirstChild("Humanoid") then
-              player.Character.Humanoid.WalkSpeed = Value
-          end
-      end
-  })
-
-  -- Jump Power Slider
-  MovementSection:AddSlider("JumpPower", {
-      Title = "Jump Power",
-      Description = "Adjusts the player's jump power",
-      Default = 50, -- Default Roblox jump power
-      Min = 0,
-      Max = 200,
-      Rounding = 1,
-      Callback = function(Value)
-          local player = game.Players.LocalPlayer
-          if player and player.Character and player.Character:FindFirstChild("Humanoid") then
-              player.Character.Humanoid.JumpPower = Value
-          end
-      end
-  })
-
-  -- Teleport Section for Selecting and Teleporting to Players
-  local TeleportSection = ClientTab:AddSection("Teleportation")
-
-  -- Player Target Dropdown for Teleportation
-  local PlayerTargetDropdown = TeleportSection:AddDropdown("PlayerTarget", {
-      Title = "Player Target",
-      Description = "Select a player to teleport to",
-      Values = {},
-      Default = "",
-      Callback = function(Value)
-          Configuration.PlayerTarget = Value
-      end
-  })
-
-  -- Populate Player Target Dropdown with Players
-  for _, player in pairs(game.Players:GetPlayers()) do
-      table.insert(PlayerTargetDropdown.Values, player.Name)
-  end
-  PlayerTargetDropdown:BuildDropdownList()
-
-  -- Teleport Button
-  TeleportSection:AddButton("Teleport", {
-      Title = "Teleport to Target",
-      Description = "Teleports you to the selected Player Target",
-      Callback = function()
-          local targetPlayer = game.Players:FindFirstChild(Configuration.PlayerTarget)
-          local localPlayer = game.Players.LocalPlayer
-          if targetPlayer and localPlayer and targetPlayer.Character and targetPlayer.Character:FindFirstChild("HumanoidRootPart") then
-              localPlayer.Character:MoveTo(targetPlayer.Character.HumanoidRootPart.Position)
-          end
-      end
-  })
-
-  -- Refresh Player List Button to Update Dropdown
-  TeleportSection:AddButton("Refresh Player List", {
-      Title = "Refresh Player List",
-      Description = "Refreshes the Player Target dropdown",
-      Callback = function()
-          PlayerTargetDropdown.Values = {}
-          for _, player in pairs(game.Players:GetPlayers()) do
-              table.insert(PlayerTargetDropdown.Values, player.Name)
-          end
-          PlayerTargetDropdown:BuildDropdownList()
-      end
-  })
-
-    else
-        ShowWarning = true
-    end
-
     Tabs.Checks = Window:AddTab({ Title = "Checks", Icon = "list-checks" })
 
     Tabs.Checks:AddParagraph({
@@ -685,6 +596,87 @@ do
     WaterCheckToggle:OnChanged(function(Value)
         Configuration.WaterCheck = Value
     end)
+
+  local MovementSection = Tabs.Checks:AddSection("Player Movement")
+
+  -- Walk Speed Slider
+  MovementSection:AddSlider("WalkSpeed", {
+      Title = "Walk Speed",
+      Description = "Adjusts the player's walk speed",
+      Default = 16, -- Default Roblox walk speed
+      Min = 0,
+      Max = 100,
+      Rounding = 1,
+      Callback = function(Value)
+          local player = game.Players.LocalPlayer
+          if player and player.Character and player.Character:FindFirstChild("Humanoid") then
+              player.Character.Humanoid.WalkSpeed = Value
+          end
+      end
+  })
+
+  -- Jump Power Slider
+  MovementSection:AddSlider("JumpPower", {
+      Title = "Jump Power",
+      Description = "Adjusts the player's jump power",
+      Default = 50, -- Default Roblox jump power
+      Min = 0,
+      Max = 200,
+      Rounding = 1,
+      Callback = function(Value)
+          local player = game.Players.LocalPlayer
+          if player and player.Character and player.Character:FindFirstChild("Humanoid") then
+              player.Character.Humanoid.JumpPower = Value
+          end
+      end
+  })
+
+  -- Teleport Section for Selecting and Teleporting to Players
+  local TeleportSection = Tabs.Checks:AddSection("Teleportation")
+
+  -- Player Target Dropdown for Teleportation
+  local PlayerTargetDropdown = TeleportSection:AddDropdown("PlayerTarget", {
+      Title = "Player Target",
+      Description = "Select a player to teleport to",
+      Values = {},
+      Default = "",
+      Callback = function(Value)
+          Configuration.PlayerTarget = Value
+      end
+  })
+
+  -- Populate Player Target Dropdown with Players
+  for _, player in pairs(game.Players:GetPlayers()) do
+      table.insert(PlayerTargetDropdown.Values, player.Name)
+  end
+  PlayerTargetDropdown:BuildDropdownList()
+
+  -- Teleport Button
+  TeleportSection:AddButton("Teleport", {
+      Title = "Teleport to Target",
+      Description = "Teleports you to the selected Player Target",
+      Callback = function()
+          local targetPlayer = game.Players:FindFirstChild(Configuration.PlayerTarget)
+          local localPlayer = game.Players.LocalPlayer
+          if targetPlayer and localPlayer and targetPlayer.Character and targetPlayer.Character:FindFirstChild("HumanoidRootPart") then
+              localPlayer.Character:MoveTo(targetPlayer.Character.HumanoidRootPart.Position)
+          end
+      end
+  })
+
+  -- Refresh Player List Button to Update Dropdown
+  TeleportSection:AddButton("Refresh Player List", {
+      Title = "Refresh Player List",
+      Description = "Refreshes the Player Target dropdown",
+      Callback = function()
+          PlayerTargetDropdown.Values = {}
+          for _, player in pairs(game.Players:GetPlayers()) do
+              table.insert(PlayerTargetDropdown.Values, player.Name)
+          end
+          PlayerTargetDropdown:BuildDropdownList()
+      end
+  })
+
 
     local AdvancedChecksSection = Tabs.Checks:AddSection("Advanced Checks")
 
