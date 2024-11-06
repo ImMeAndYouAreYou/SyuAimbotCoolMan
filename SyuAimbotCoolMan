@@ -118,6 +118,7 @@ Configuration.OffAfterKill = ImportedConfiguration["OffAfterKill"] or false
 Configuration.AimPartDropdownValues = ImportedConfiguration["AimPartDropdownValues"] or { "Head", "HumanoidRootPart" }
 Configuration.AimPart = ImportedConfiguration["AimPart"] or "HumanoidRootPart"
 Configuration.RandomAimPart = ImportedConfiguration["RandomAimPart"] or false
+Configuration.PlayerTarget = ImportedConfiguration["PlayerTarget"] or false
 
 Configuration.UseOffset = ImportedConfiguration["UseOffset"] or false
 Configuration.OffsetType = ImportedConfiguration["OffsetType"] or "Static"
@@ -137,10 +138,6 @@ Configuration.TriggerBot = ImportedConfiguration["TriggerBot"] or false
 Configuration.OnePressTriggeringMode = ImportedConfiguration["OnePressTriggeringMode"] or false
 Configuration.SmartTriggerBot = ImportedConfiguration["SmartTriggerBot"] or false
 Configuration.TriggerKey = ImportedConfiguration["TriggerKey"] or "V"
-
-Configuration.PlayerTarget = ImportedConfiguration["PlayerTarget"] or "PickaPlayer"
-
-
 
 --? Checks
 
@@ -317,13 +314,13 @@ do
             Configuration.AimMode = Value
         end
     })
+    --[[
     if getfenv().mousemoverel and IsComputer then
         table.insert(AimModeDropdown.Values, "Mouse")
         AimModeDropdown:BuildDropdownList()
     else
         ShowWarning = true
     end
-
     if getfenv().hookmetamethod and getfenv().newcclosure and getfenv().checkcaller and getfenv().getnamecallmethod then
         table.insert(AimModeDropdown.Values, "Silent")
         AimModeDropdown:BuildDropdownList()
@@ -358,6 +355,8 @@ do
     else
         ShowWarning = true
     end
+
+]]
    -- New Client Window for Player Client functionalities
    local ClientWindow = Fluent:CreateWindow({
     Title = "Client",
@@ -453,6 +452,8 @@ TeleportSection:AddButton("Refresh Player List", {
     end
 })
 
+-- Select the Client tab to display it initially
+ClientWindow:SelectTab(1)
 
     local OffAfterKillToggle = AimbotSection:AddToggle("OffAfterKill", { Title = "Off After Kill", Description = "Disables the Aiming Mode after killing a Target", Default = Configuration.OffAfterKill })
     OffAfterKillToggle:OnChanged(function(Value)
@@ -647,6 +648,7 @@ TeleportSection:AddButton("Refresh Player List", {
     else
         ShowWarning = true
     end
+
     Tabs.Checks = Window:AddTab({ Title = "Checks", Icon = "list-checks" })
 
     Tabs.Checks:AddParagraph({
