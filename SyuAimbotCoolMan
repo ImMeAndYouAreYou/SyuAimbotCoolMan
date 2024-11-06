@@ -118,7 +118,7 @@ Configuration.OffAfterKill = ImportedConfiguration["OffAfterKill"] or false
 Configuration.AimPartDropdownValues = ImportedConfiguration["AimPartDropdownValues"] or { "Head", "HumanoidRootPart" }
 Configuration.AimPart = ImportedConfiguration["AimPart"] or "HumanoidRootPart"
 Configuration.RandomAimPart = ImportedConfiguration["RandomAimPart"] or false
-
+Configuration.PlayerTarget = ImportedConfiguration["PlayerTarget"] or false
 Configuration.UseOffset = ImportedConfiguration["UseOffset"] or false
 Configuration.OffsetType = ImportedConfiguration["OffsetType"] or "Static"
 Configuration.StaticOffsetIncrement = ImportedConfiguration["StaticOffsetIncrement"] or 10
@@ -313,7 +313,6 @@ do
             Configuration.AimMode = Value
         end
     })
-
     if getfenv().mousemoverel and IsComputer then
         table.insert(AimModeDropdown.Values, "Mouse")
         AimModeDropdown:BuildDropdownList()
