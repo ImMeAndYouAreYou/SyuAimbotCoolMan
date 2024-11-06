@@ -314,14 +314,14 @@ do
             Configuration.AimMode = Value
         end
     })
-    --[[
+
     if getfenv().mousemoverel and IsComputer then
         table.insert(AimModeDropdown.Values, "Mouse")
         AimModeDropdown:BuildDropdownList()
     else
         ShowWarning = true
     end
-    if getfenv().hookmetamethod and getfenv().newcclosure and getfenv().checkcaller and getfenv().getnamecallmethod then
+   --[[    if getfenv().hookmetamethod and getfenv().newcclosure and getfenv().checkcaller and getfenv().getnamecallmethod then
         table.insert(AimModeDropdown.Values, "Silent")
         AimModeDropdown:BuildDropdownList()
 
